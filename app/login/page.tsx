@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { loginHandler } from "@/utils/userService";
-
-interface LoginState {
-  error: string
-}
+import { loginHandler, LoginFormState } from "@/utils/userService";
+import GoogleLoginBtn from "@/components/GoogleLoginBtn";
 
 export default function Login() {
 
-  const [loginState, loginAction, loginPending] = useActionState<LoginState, FormData>(loginHandler,{error:''});
+  const [loginState, loginAction, loginPending] = useActionState<LoginFormState, FormData>(loginHandler,{error:''});
 
   return (
     <div className="flex justify-center items-center h-dvh">
@@ -46,10 +43,10 @@ export default function Login() {
               disabled={loginPending}
             >Login</button>
           </div>
-          <div className="m-4 w-fit mx-auto">
-            <Link href={'/register'}>Create new account</Link>
-          </div>
         </form>
+        <div className="m-4 w-fit mx-auto">
+          <GoogleLoginBtn/>
+        </div>
       </div>
     </div>
   )
