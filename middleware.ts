@@ -16,16 +16,16 @@ export async function middleware(req: NextRequest) {
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) throw new Error("JWT_SECRET not set");
 
-    // Convert the secret to a Uint8Array
     const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jwtVerify(loginToken.value, secret);
     const user = payload.user as UserInterface
 
-    console.log(user)
-
     const headers = new Headers(req.headers);
-    headers.set('x-user-id', user.id as string);
-    headers.set('x-user-email', user.email as string);
+    headers.set('x-user', JSON.stringify({
+      id: user.id,
+      email: user.email,
+    }));
+    headers.set('x-user-id', user.id);
     
     return NextResponse.next({ request: { headers } });
   } catch(error) {
