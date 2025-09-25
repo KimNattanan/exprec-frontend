@@ -1,8 +1,8 @@
-export interface Price {
+export interface Category {
   user_id: string;
   id: string;
   prev_id: string;
   next_id: string;
-  amount: number;
+  title: string;
   bg_color: string;
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { getUser, logoutUser } from "@/utils/apiService";
+import { getUser, logoutUser } from "@/utils/api/user-api";
 import Link from "next/link";
 import { useEffect, useState } from "react"
 import { BsCashCoin } from "react-icons/bs";

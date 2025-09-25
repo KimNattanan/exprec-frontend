@@ -1,4 +1,3 @@
-import { deletePrice } from "@/utils/apiService";
 import { MouseEventHandler } from "react";
 
 export default function PriceBox(

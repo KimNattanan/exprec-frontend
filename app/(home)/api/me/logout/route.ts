@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   
   const user = req.headers.get("x-user");
   if(!user){
-    return new NextResponse(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   return NextResponse.redirect(FRONTEND_URL+"/login")
 }

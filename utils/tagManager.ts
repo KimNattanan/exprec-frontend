@@ -108,11 +108,8 @@ export default function useTagManager<Tag extends LinkedTag>({
     
     if (tagIndex < 0 || tagIndex >= tags.length) return;
     const tag = tags[tagIndex];
-    console.log("wowaq");
 
-    if(await deleteFunc(tag.id)) return;
-
-    console.log("WOWAQ");
+    if(!(await deleteFunc(tag.id))) return;
 
     const prevTag = tagIndex-1 == -1 ? null : { ...tags[tagIndex-1], next_id: tag.next_id };
     const nextTag = tagIndex+1 == tags.length ? null : { ...tags[tagIndex+1], prev_id: tag.prev_id };

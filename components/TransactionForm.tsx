@@ -1,18 +1,27 @@
 'use client'
 
 import { Price } from "@/utils/types/Price"
-import { createPrice, deletePrice, fetchPrices } from "@/utils/apiService";
+import { createPrice, deletePrice, fetchPrices } from "@/utils/api/price-api";
 import { useEffect, useState } from "react"
 import PriceBox from "./PriceBox";
 import useTagManager from "@/utils/tagManager";
+import { Category } from "@/utils/types/Category";
 
 export default function TransactionForm() { 
   
   const [prices, setPrices] = useState<Array<Price>>([])
-  const [categor, setPrices] = useState<Array<Price>>([])
+  const [categories, setCategories] = useState<Array<Category>>([])
+
   const priceManager = useTagManager<Price>({
     getTags: ()=>prices,
     setTags: setPrices,
+    fetchFunc: fetchPrices,
+    createFunc: createPrice,
+    deleteFunc: deletePrice,
+  })
+  const categoryManager = useTagManager<Category>({
+    getTags: ()=>categories,
+    setTags: setCategories,
     fetchFunc: fetchPrices,
     createFunc: createPrice,
     deleteFunc: deletePrice,
