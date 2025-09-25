@@ -26,7 +26,7 @@ export async function getUser() {
     return null
   }
 }
-export async function getPrices() {
+export async function fetchPrices() {
   try{
     const res = await axios.get(FRONTEND_URL+'/api/me/prices');
     return JSON.parse(res.data)
@@ -50,7 +50,9 @@ export async function createPrice(prev_id: string|undefined, next_id: string|und
 export async function deletePrice(id: string) {
   try{
     await axios.delete(FRONTEND_URL+'/api/prices/'+id)
+    return false;
   } catch(error) {
     console.log(error)
+    return true;
   }
 }

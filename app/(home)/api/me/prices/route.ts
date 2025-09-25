@@ -1,4 +1,5 @@
 import axios from "axios";
+import { randomInt } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
       user_id: userId,
       prev_id,
       next_id,
-      amount: 0,
+      amount: randomInt(999),
       bg_color: '#74BCFF'
     });
     return NextResponse.json(JSON.stringify(res.data), { status: 201 })

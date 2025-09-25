@@ -1,12 +1,12 @@
 'use client'
 
-import PriceContainer from "@/components/PriceContainer";
+import TransactionForm from "@/components/TransactionForm";
 import RecordContainer from "@/components/RecordContainer";
 
 export default function Home() {  
   return (
     <>
-      <PriceContainer/>
+      <TransactionForm/>
       <RecordContainer/>
     </>
   );
