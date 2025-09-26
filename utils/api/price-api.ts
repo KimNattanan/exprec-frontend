@@ -3,6 +3,7 @@
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchPrices() {
+  // return null;
   try{
     const res = await fetch(FRONTEND_URL+'/api/me/prices');
     if(!res.ok){

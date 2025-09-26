@@ -1,7 +1,16 @@
 import { MouseEventHandler } from "react";
 
+type Props = {
+  amount: number;
+  bg_color: string;
+  deleteHandler: MouseEventHandler;
+  insertLeftHanler: MouseEventHandler;
+  insertRightHandler: MouseEventHandler;
+  selectHandler: MouseEventHandler;
+}
+
 export default function PriceBox(
-  {amount, bg_color, deleteHandler, insertLeftHandler, insertRightHandler} :
+  {amount, bg_color, deleteHandler, insertLeftHandler, insertRightHandler,} :
   {amount: number, bg_color: string, deleteHandler: MouseEventHandler, insertLeftHandler: MouseEventHandler, insertRightHandler: MouseEventHandler})
 {
   return (

@@ -37,6 +37,7 @@ export default function useTagManager<Tag extends LinkedTag>({
 
   const insertTag = async (prevIndex: number, nextIndex: number) => {
     const tags = getTags();
+    console.log(tags.length, "!!!!!!");
 
     if (prevIndex == -1 && nextIndex == -1) {
       const lastTag = tags[tags.length - 1];
@@ -124,10 +125,10 @@ export default function useTagManager<Tag extends LinkedTag>({
     setTags(newTags);
   };
 
-  const insertLastHandler = () => insertTag(-1, -1)
+  const insertLastHandler = () => insertTag(-1, -1);
   const insertLeftHandler = (i: number) => () => insertTag(-1, i);
   const insertRightHandler = (i: number) => () => insertTag(i, -1);
-  const deleteHandler = (i: number) => () => deleteTag(i)
+  const deleteHandler = (i: number) => () => deleteTag(i);
 
   return { doFetch, insertLastHandler, insertLeftHandler, insertRightHandler, deleteHandler };
 }
