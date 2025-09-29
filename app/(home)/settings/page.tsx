@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteUserHandler } from "@/utils/apiService";
+import { deleteUserHandler } from "@/utils/api/user-api";
 import { useState } from "react";
 
 export default function Settings() {

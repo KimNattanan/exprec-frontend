@@ -46,7 +46,7 @@ export default function TransactionForm() {
     setNote(s);
   }
   const submitHandler = ()=>{
-
+    setRecord({ ...record, note: note } as Record);
   }
   
   useEffect(()=>{
@@ -64,6 +64,7 @@ export default function TransactionForm() {
             deleteHandler={priceManager.deleteHandler(i)}
             insertLeftHandler={priceManager.insertLeftHandler(i)}
             insertRightHandler={priceManager.insertRightHandler(i)}
+            selectHandler={priceSelectHandler(i)}
           />
         ))}
         <button
@@ -80,6 +81,7 @@ export default function TransactionForm() {
             deleteHandler={categoryManager.deleteHandler(i)}
             insertLeftHandler={categoryManager.insertLeftHandler(i)}
             insertRightHandler={categoryManager.insertRightHandler(i)}
+            selectHandler={categorySelectHandler(i)}
           />
         ))}
         <button
