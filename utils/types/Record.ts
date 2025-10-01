@@ -3,6 +3,6 @@ export interface Record {
   id: string;
   created_at: Date;
   amount: number;
-  category_id: string;
+  category: string;
   note: string;
 }

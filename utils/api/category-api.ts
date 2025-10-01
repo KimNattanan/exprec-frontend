@@ -7,12 +7,13 @@ export async function fetchCategories() {
     const res = await fetch(FRONTEND_URL+'/api/me/categories');
     if(!res.ok){
       console.error(await res.json());
-      return false;
+      return null;
     }
-    return await res.json()
+    const data = await res.json();
+    return data;
   } catch(error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
@@ -30,12 +31,13 @@ export async function createCategory(prev_id: string|undefined, next_id: string|
     });
     if(!res.ok){
       console.error(await res.json());
-      return false;
+      return null;
     }
-    return await res.json()
+    const data = await res.json();
+    return data;
   } catch(error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 

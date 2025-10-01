@@ -1,13 +1,11 @@
 'use client'
 
-import TransactionForm from "@/components/TransactionForm";
-import RecordContainer from "@/components/RecordContainer";
+import TransactionForm from "@/components/transaction-form/TransactionForm";
 
 export default function Home() {  
   return (
     <>
       <TransactionForm/>
-      <RecordContainer/>
     </>
   );
 }

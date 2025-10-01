@@ -1,10 +1,12 @@
 'use client'
 
+import { Record } from "../types/Record";
+
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 
-export async function fetchPrices() {
+export async function fetchRecords() {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/prices');
+    const res = await fetch(FRONTEND_URL+'/api/me/records');
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -12,22 +14,19 @@ export async function fetchPrices() {
     const data = await res.json();
     return data;
   } catch(error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
-export async function createPrice(prev_id: string|undefined, next_id: string|undefined) {
+export async function createRecord(record: Record) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/prices', {
+    const res = await fetch(FRONTEND_URL+'/api/me/records', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        prev_id,
-        next_id
-      })
+      body: JSON.stringify(record)
     });
     if(!res.ok){
       console.error(await res.json());
@@ -41,11 +40,11 @@ export async function createPrice(prev_id: string|undefined, next_id: string|und
   }
 }
 
-export async function deletePrice(id: string) {
+export async function deleteRecord(id: string) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/prices/'+id, {
+    const res = await fetch(FRONTEND_URL+'/api/records/'+id, {
       method: 'DELETE'
-    });
+    })
     if(!res.ok){
       console.error(await res.json());
       return false;

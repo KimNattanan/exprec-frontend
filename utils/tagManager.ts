@@ -37,7 +37,6 @@ export default function useTagManager<Tag extends LinkedTag>({
 
   const insertTag = async (prevIndex: number, nextIndex: number) => {
     const tags = getTags();
-    console.log(tags.length, "!!!!!!");
 
     if (prevIndex == -1 && nextIndex == -1) {
       const lastTag = tags[tags.length - 1];

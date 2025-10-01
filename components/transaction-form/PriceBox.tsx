@@ -1,7 +1,7 @@
 import { MouseEventHandler } from "react";
 
 type Props = {
-  title: string;
+  amount: number;
   bg_color: string;
   deleteHandler: MouseEventHandler;
   insertLeftHandler: MouseEventHandler;
@@ -9,25 +9,24 @@ type Props = {
   selectHandler: MouseEventHandler;
 }
 
-export default function CategoryBox({
-  title,
+export default function PriceBox({
+  amount,
   bg_color,
   deleteHandler,
   insertLeftHandler,
   insertRightHandler,
   selectHandler,
-}: Props
-){
+}: Props) {
   return (
     <div
       className="flex flex-col items-center justify-center h-max w-max aspect-square m-2"
       style={{ backgroundColor: bg_color }}
-      onClick={selectHandler}
     >
-      <div>{title}</div>
+      <div>{amount}</div>
       <button className="cursor-pointer bg-gray-300 m-1" onClick={deleteHandler}>delete</button>
       <button className="cursor-pointer bg-gray-300 m-1" onClick={insertLeftHandler}>{"<-"}</button>
       <button className="cursor-pointer bg-gray-300 m-1" onClick={insertRightHandler}>{"->"}</button>
+      <button className="cursor-pointer bg-gray-300 m-1" onClick={selectHandler}>{"select"}</button>
     </div>
   )
 }
