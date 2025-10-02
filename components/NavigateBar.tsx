@@ -61,8 +61,13 @@ export default function NavigateBar() {
         </div>
       </div>
       <div className="flex h-full items-center justify-end">
+        <Link href={'/'} className="h-full mx-8">
+          <div className="h-full aspect-square flex items-center justify-center text-xl">
+            Home
+          </div>
+        </Link>
         <Link href={'/history'} className="h-full mx-8">
-          <div className="h-full aspect-square flex items-center justify-center text-4xl">
+          <div className="h-full aspect-square flex items-center justify-center text-xl">
             History
           </div>
         </Link>
