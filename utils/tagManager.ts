@@ -24,7 +24,7 @@ export default function useTagManager<Tag extends LinkedTag>({
 }: TagManagerProps<Tag>) {
 
   const doFetch = async () => {
-    const res = (await fetchFunc()) ?? [];
+    const res: Tag[] = (await fetchFunc()) ?? [];
     const arr: Tag[] = [];
     let x = res.find(tag => !tag.prev_id);
     while (x) {

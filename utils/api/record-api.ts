@@ -3,6 +3,7 @@
 import { Record } from "../types/Record";
 
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
+const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchRecords() {
   try{
@@ -42,7 +43,8 @@ export async function createRecord(record: Record) {
 
 export async function deleteRecord(id: string) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/records/'+id, {
+    console.log(BACKEND_URL+'/api/v2/records/'+id);
+    const res = await fetch(BACKEND_URL+'/api/v2/records/'+id, {
       method: 'DELETE'
     })
     if(!res.ok){

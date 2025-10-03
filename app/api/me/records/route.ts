@@ -14,9 +14,7 @@ export async function GET(req: NextRequest) {
       throw new Error("Failed to fetch user's records");
     }
     const data = await res.json();
-    console.log("data: ", data);
     const data2 = (data as Record[]).map(({ user_id: _, ...rest }) => rest);
-    console.log("data2: ", data2);
     return NextResponse.json(data2, { status: res.status });
   } catch(error) {
     console.error(error);

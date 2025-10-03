@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         user_id: userId,
         prev_id,
         next_id,
-        title: "abc test",
+        title: "New Category",
         bg_color: '#74BCFF'
       })
     });

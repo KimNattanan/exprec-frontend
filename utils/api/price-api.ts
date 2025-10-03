@@ -13,10 +13,11 @@ export async function fetchPrices() {
       return null;
     }
     const data = await res.json();
+    console.log("api-client", data);
     return data;
   } catch(error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
@@ -62,7 +63,6 @@ export async function deletePrice(id: string) {
 
 export async function patchPrice(id: string, price: Price) {
   try{
-    console.log("test1");
     const res = await fetch(BACKEND_URL+'/api/v2/prices/'+id, {
       method: 'PATCH',
       headers: {
@@ -70,7 +70,6 @@ export async function patchPrice(id: string, price: Price) {
       },
       body: JSON.stringify(price)
     });
-    console.log("test2");
     if(!res.ok){
       console.error(await res.json());
       return null;

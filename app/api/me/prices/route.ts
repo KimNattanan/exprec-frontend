@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         user_id: userId,
         prev_id,
         next_id,
-        amount: randomInt(999),
+        amount: 100,
         bg_color: '#74BCFF'
       })
     });

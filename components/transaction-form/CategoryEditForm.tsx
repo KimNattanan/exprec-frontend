@@ -1,37 +1,37 @@
 'use client'
 
-import { patchPrice } from "@/utils/api/price-api";
-import { Price } from "@/utils/types/Price";
+import { patchCategory } from "@/utils/api/category-api";
+import { Category } from "@/utils/types/Category";
 import { Dispatch, SetStateAction, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 
 type Props = {
   id: number;
-  price: Price;
-  setPrices: Dispatch<SetStateAction<Price[]>>;
+  category: Category;
+  setCategories: Dispatch<SetStateAction<Category[]>>;
   closeForm: ()=>void;
 }
 
-export default function PriceEditForm({
+export default function CategoryEditForm({
   id,
-  price,
-  setPrices,
+  category,
+  setCategories,
   closeForm,
 }: Props) {
-  const [newPrice, setNewPrice] = useState({ prev_id: price.prev_id, next_id: price.next_id, amount: price.amount, bg_color: price.bg_color })
+  const [newCategory, setNewCategory] = useState({ prev_id: category.prev_id, next_id: category.next_id, title: category.title, bg_color: category.bg_color })
   const [submitting, setSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState("")
+  const [submitMessage, setSubmitMessage] = useState("wowza")
   const submit = async()=>{
     setSubmitting(true);
-    const res = await patchPrice(price.id, newPrice as Price);
+    const res = await patchCategory(category.id, newCategory as Category);
     if(!res){
       setSubmitting(false);
       setSubmitMessage("Failed to save");
       return;
     }
-    setPrices((prev) => [
+    setCategories((prev) => [
       ...prev.slice(0, id),
-      { ...price, ...newPrice } as Price,
+      { ...category, ...newCategory } as Category,
       ...prev.slice(id + 1)
     ]);
     closeForm();
@@ -49,15 +49,15 @@ export default function PriceEditForm({
             <IoIosClose/>
           </div>
           <div className="my-2 text-center">
-            Amount :
+            Title :
           </div>
           <div className="flex items-center h-full">
             <input
               className="min-w-0 w-full h-fit border-1 text-center"
-              title="amount"
-              type="number"
-              value={newPrice.amount}
-              onChange={(e)=>setNewPrice({ ...newPrice, amount: Number(e.target.value) })}
+              title="title"
+              type="text"
+              value={newCategory.title}
+              onChange={(e)=>setNewCategory({ ...newCategory, title: e.target.value })}
             />
           </div>
           <div className="my-2 text-center">
@@ -68,8 +68,8 @@ export default function PriceEditForm({
               className="min-w-0 w-full h-full"
               title="background color"
               type="color"
-              value={newPrice.bg_color}
-              onChange={(e)=>setNewPrice({ ...newPrice, bg_color: e.target.value })}
+              value={newCategory.bg_color}
+              onChange={(e)=>setNewCategory({ ...newCategory, bg_color: e.target.value })}
             />
           </div>
         </div>

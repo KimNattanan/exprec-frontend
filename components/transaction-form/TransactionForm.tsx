@@ -15,6 +15,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 import TagEditForm from "./PriceEditForm";
 import PriceEditForm from "./PriceEditForm";
+import CategoryEditForm from "./CategoryEditForm";
 
 
 const NOTE_MAXLENGTH = 50;
@@ -86,14 +87,13 @@ export default function TransactionForm() {
   const [page, setPage] = useState(0)
   const [editMode, setEditMode] = useState(false);
   const [edittingPrice, setEdittingPrice] = useState(-1);
+  const [edittingCategory, setEdittingCategory] = useState(-1);
   
   // useEffect
   useEffect(()=>{
     priceManager.doFetch();
     categoryManager.doFetch();
   },[])
-
-  const func = ()=>setEdittingPrice(-1);
   
   return (
     <>
@@ -103,6 +103,14 @@ export default function TransactionForm() {
           price={prices[edittingPrice]}
           setPrices={setPrices}
           closeForm={()=>setEdittingPrice(-1)}
+        />
+      }
+      {edittingCategory != -1 &&
+        <CategoryEditForm
+          id={edittingCategory}
+          category={categories[edittingCategory]}
+          setCategories={setCategories}
+          closeForm={()=>setEdittingCategory(-1)}
         />
       }
       <div className="bg-teal-100 w-full h-[calc(100dvh-4rem)] relative overflow-hidden">
@@ -150,19 +158,22 @@ export default function TransactionForm() {
             {categories.map((v,i)=>(
               <CategoryBox
                 key={i}
-                // edit_mode={editMode}
+                edit_mode={editMode}
                 title={v.title}
                 bg_color={v.bg_color}
+                selectHandler={categorySelectHandler(i)}
                 deleteHandler={categoryManager.deleteHandler(i)}
                 insertLeftHandler={categoryManager.insertLeftHandler(i)}
                 insertRightHandler={categoryManager.insertRightHandler(i)}
-                selectHandler={categorySelectHandler(i)}
+                editHandler={()=>setEdittingCategory(i)}
               />
             ))}
-            <button
-              className="flex items-center justify-center bg-amber-200 w-32 h-32 m-2 cursor-pointer"
-              onClick={categoryManager.insertLastHandler}
-            >add category</button>
+            {editMode && categories.length == 0 &&
+              <button
+                className="flex items-center justify-center bg-amber-200 w-32 h-32 m-2 cursor-pointer"
+                onClick={categoryManager.insertLastHandler}
+              >add category</button>
+            }
           </div>
         )}
         {page == 2 && (
