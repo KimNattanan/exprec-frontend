@@ -9,5 +9,5 @@ export async function POST(req: Request) {
   }
   const cookieStore = await cookies();
   cookieStore.delete("loginToken");
-  return NextResponse.json(null, { status: 204 });
+  return NextResponse.json(null, { status: 200 });
 }

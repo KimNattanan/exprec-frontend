@@ -6,25 +6,41 @@ import { useEffect, useState } from "react"
 import RecordBox from "./RecordBox"
 import { MdDone } from "react-icons/md"
 import { CiEdit } from "react-icons/ci"
+import { useSearchParams } from "next/navigation"
+import { Pagination } from "@/utils/types/Pagination"
 
 export default function RecordContainer() {
+  const searchParams = useSearchParams()
+  const pageStr = searchParams.get('page') || '1'
+  const page = parseInt(pageStr, 10) || 1
+  const setPage = (x: number)=>{
+    window.history.replaceState({}, '', '/history' + ((Number.isNaN(x) || x==1) ? '' : '?page='+x))
+  }
+  const pageChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPage(parseInt(e.target.value, 10))
+  }
+  
+  
+  const [pagination, setPagination] = useState<Pagination>({totalPages: 1} as Pagination)
+  const [editMode, setEditMode] = useState(false)
+  
+  const doFetchRecords = async()=>{
+    const res = await fetchRecords(page)
+    if(!res) return
+    res.pagination.totalPages = Math.max(1,res.pagination.totalPages)
+    setRecords(res.data)
+    setPagination(res.pagination)
+  }
   
   const [records, setRecords] = useState<Record[]>([])
-  const [editMode, setEditMode] = useState(false);
-
   const recordDeleteHandler = (id: number) => async () => {
-    if(!(await deleteRecord(records[id].id))) return;
-    setRecords(records.filter((_, i) => i !== id));
+    if(!(await deleteRecord(records[id].id))) return
+    doFetchRecords()
   }
 
   useEffect(()=>{
-    const doFetch = async()=>{
-      const res = await fetchRecords();
-      console.log(res);
-      setRecords(res)
-    }
-    doFetch();
-  },[])
+    doFetchRecords()
+  },[page])
 
   return (
     <>
@@ -39,6 +55,31 @@ export default function RecordContainer() {
         {records.map((v,i)=>(
           <RecordBox key={i} record={v} editMode={editMode} deleteHandler={recordDeleteHandler(i)}/>
         ))}
+        <div className="flex justify-center">
+          {page > 1 &&
+            <button
+              className="p-2 cursor-pointer text-center self-center"
+              onClick={()=>setPage(page-1)}
+            >{'＜'}</button>
+          }
+          <input
+            className="min-w-0 m-2 text-center"
+            type="number"
+            onChange={pageChangeHandler}
+            value={pageStr}
+            style={{ width: `${String(page).length}ch` }}
+          />
+          <div className="self-center m-2">{'・'}</div>
+          <div className="self-center m-2">
+            {pagination.totalPages}
+          </div>
+          {page < pagination.totalPages &&
+            <button
+              className="p-2 cursor-pointer text-center self-center aspect-square"
+              onClick={()=>setPage(page+1)}
+            >{'＞'}</button>
+          }
+        </div>
       </div>
     </>
   )

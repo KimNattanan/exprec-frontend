@@ -20,7 +20,7 @@ export default function CategoryEditForm({
 }: Props) {
   const [newCategory, setNewCategory] = useState({ prev_id: category.prev_id, next_id: category.next_id, title: category.title, bg_color: category.bg_color })
   const [submitting, setSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState("wowza")
+  const [submitMessage, setSubmitMessage] = useState("")
   const submit = async()=>{
     setSubmitting(true);
     const res = await patchCategory(category.id, newCategory as Category);
@@ -37,30 +37,52 @@ export default function CategoryEditForm({
     closeForm();
   }
   return (
-    <div
-      className="absolute z-10 w-dvw h-[calc(100dvh-4rem)] bg-[rgba(0,0,0,0.5)] flex justify-center items-center"
-    >
-      <div className="relative bg-white w-96 h-fit p-12 flex flex-col items-center">
+    <div className="
+      absolute z-10 flex justify-center items-center
+      bg-foreground/50
+      w-dvw h-[calc(100dvh-4rem)]
+    ">
+      <div className="
+        relative flex flex-col items-center
+        bg-background
+        w-96 h-fit p-12
+      ">
+        <div
+          className="
+            absolute  
+            bg-bad text-white cursor-pointer
+            text-4xl top-0 right-0
+          "
+          onClick={closeForm}
+          >
+          <IoIosClose/>
+        </div>
         <div className="grid grid-cols-2 mb-2">
-          <div
-            className="bg-red-600 absolute text-4xl text-white top-0 right-0 cursor-pointer"
-            onClick={closeForm}
-            >
-            <IoIosClose/>
-          </div>
-          <div className="my-2 text-center">
+          <div className="
+            text-center content-center
+            font-medium
+            my-2 text-xl
+          ">
             Title :
           </div>
           <div className="flex items-center h-full">
             <input
-              className="min-w-0 w-full h-fit border-1 text-center"
+              className="
+                min-w-0 w-full h-fit text-center
+                border-1
+                text-xl
+              "
               title="title"
               type="text"
               value={newCategory.title}
               onChange={(e)=>setNewCategory({ ...newCategory, title: e.target.value })}
             />
           </div>
-          <div className="my-2 text-center">
+          <div className="
+            text-center content-center
+            font-medium
+            my-2 text-xl
+          ">
             Color : 
           </div>
           <div className="flex items-center h-full">
@@ -74,7 +96,10 @@ export default function CategoryEditForm({
           </div>
         </div>
         <button
-          className="bg-green-600 text-white disabled:opacity-50 px-8 py-2 my-2"
+          className="
+            bg-foreground text-background disabled:opacity-50 cursor-pointer font-medium rounded-full
+            px-12 py-2 my-2 text-xl
+          "
           onClick={submit}
           disabled={submitting}
         >

@@ -8,14 +8,16 @@ export async function GET(req: NextRequest) {
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { searchParams } = new URL(req.url);
+  const page = searchParams.get("page");
   try {
-    const res = await fetch(BACKEND_URL+'/api/v2/records/user/'+userId);
+    const res = await fetch(BACKEND_URL+'/api/v2/records/user/'+userId+'?page='+page);
     if(!res.ok){
       throw new Error("Failed to fetch user's records");
     }
-    const data = await res.json();
-    const data2 = (data as Record[]).map(({ user_id: _, ...rest }) => rest);
-    return NextResponse.json(data2, { status: res.status });
+    const {data, pagination} = await res.json();
+    const mappedData = (data as Record[]).map(({ user_id: _, ...rest }) => rest);
+    return NextResponse.json({ data: mappedData, pagination }, { status: res.status });
   } catch(error) {
     console.error(error);
     return NextResponse.json({ error: "Failed to fetch user's records" }, { status: 500 });

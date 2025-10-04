@@ -3,19 +3,20 @@
 import { Price } from "@/utils/types/Price"
 import { createPrice, deletePrice, fetchPrices } from "@/utils/api/price-api";
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import PriceBox from "./PriceBox";
+// import PriceBox from "./PriceBox";
 import useTagManager from "@/utils/tagManager";
 import { Category } from "@/utils/types/Category";
-import CategoryBox from "./CategoryBox";
+// import CategoryBox from "./CategoryBox";
 import { createCategory, deleteCategory, fetchCategories } from "@/utils/api/category-api";
 import { Record } from "@/utils/types/Record";
 import { IoIosArrowBack } from "react-icons/io";
 import { createRecord } from "@/utils/api/record-api";
 import { CiEdit } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
-import TagEditForm from "./PriceEditForm";
 import PriceEditForm from "./PriceEditForm";
 import CategoryEditForm from "./CategoryEditForm";
+import { getContrastYIQ } from "@/utils/utils";
+import TagBox from "./TagBox";
 
 
 const NOTE_MAXLENGTH = 50;
@@ -25,6 +26,8 @@ export default function TransactionForm() {
   // price, category
   const [prices, setPrices] = useState<Array<Price>>([])
   const [categories, setCategories] = useState<Array<Category>>([])
+  const [priceFetched, setPriceFetched] = useState(false);
+  const [categoryFetched, setCategoryFetched] = useState(false);
   const priceManager = useTagManager<Price>({
     getTags: ()=>prices,
     setTags: setPrices,
@@ -45,7 +48,7 @@ export default function TransactionForm() {
     setPage(page+1);
   }
   const categorySelectHandler = (i: number) => () => {
-    setRecord({ ...record, category: categories[i].title } as Record);
+    setRecord({ ...record, category: categories[i].title, category_bg_color: categories[i].bg_color } as Record);
     setPage(page+1);
   }
   
@@ -66,7 +69,7 @@ export default function TransactionForm() {
   }
   
   // submission
-  const [record, setRecord] = useState<Record>()
+  const [record, setRecord] = useState<Record>({} as Record)
   const [submitting, setSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState("")
 
@@ -81,6 +84,7 @@ export default function TransactionForm() {
     setRecord({} as Record);
     setPage(0);
     setSubmitMessage("");
+    setNote("");
   }
 
   // ...
@@ -91,8 +95,8 @@ export default function TransactionForm() {
   
   // useEffect
   useEffect(()=>{
-    priceManager.doFetch();
-    categoryManager.doFetch();
+    priceManager.doFetch().then(()=>setPriceFetched(true));
+    categoryManager.doFetch().then(()=>setCategoryFetched(true));
   },[])
   
   return (
@@ -113,30 +117,35 @@ export default function TransactionForm() {
           closeForm={()=>setEdittingCategory(-1)}
         />
       }
-      <div className="bg-teal-100 w-full h-[calc(100dvh-4rem)] relative overflow-hidden">
-        {page != 0 &&
+      <div className="bg-background w-full h-[calc(100dvh-4rem)] relative">
+        {page != 0 && // back button
           <div
-            className="fixed left-0 bottom-0 bg-gray-600 rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
+            className="fixed left-16 bottom-16 bg-gray-600 rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
             onClick={()=>setPage(page-1)}
           >
             <IoIosArrowBack/>
           </div>
         }
-        {page != 2 &&
+        {(page == 0 && priceFetched || page == 1 && categoryFetched) && // edit button
           <div
-            className="fixed right-0 bottom-0 bg-gray-600 rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
+            className="fixed bg-gray-600 transition-all rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
+            style={{
+              right: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
+              bottom: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
+              transform: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? 'translate(50%, 50%)' : undefined
+            }}
             onClick={()=>setEditMode(!editMode)}
           >
             {editMode ? <MdDone/> : <CiEdit/>}
           </div>
         }
         {page == 0 && (
-          <div className="flex justify-center flex-wrap">
+          <div className="flex justify-center items-center h-full flex-wrap">
             {prices.map((v,i)=>(
-              <PriceBox
+              <TagBox
                 key={i}
                 edit_mode={editMode}
-                amount={v.amount}
+                value={v.amount}
                 bg_color={v.bg_color}
                 selectHandler={priceSelectHandler(i)}
                 deleteHandler={priceManager.deleteHandler(i)}
@@ -154,12 +163,12 @@ export default function TransactionForm() {
           </div>
         )}
         {page == 1 && (
-          <div className="flex justify-center">
+          <div className="flex justify-center items-center h-full flex-wrap">
             {categories.map((v,i)=>(
-              <CategoryBox
+              <TagBox
                 key={i}
                 edit_mode={editMode}
-                title={v.title}
+                value={v.title}
                 bg_color={v.bg_color}
                 selectHandler={categorySelectHandler(i)}
                 deleteHandler={categoryManager.deleteHandler(i)}
@@ -177,27 +186,44 @@ export default function TransactionForm() {
           </div>
         )}
         {page == 2 && (
-          <div className="flex flex-col items-center pt-20 h-full">
-            <div className="grid grid-cols-2">
-              <div className="p-2">
-                <b>amount:</b>
-              </div>
-              <div className="p-2">{record?.amount}</div>
-              <div className="p-2">
-                <b>category:</b>
-              </div>
-              <div className="p-2">{record?.category}</div>
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex my-4 border-y-2 border-dashed px-12 py-4">
+              <div className="
+                mx-4 self-center
+                select-none font-medium
+                text-lg
+              ">Amount:</div>
+              <div className="
+                mx-4 self-center
+                text-shadow-sm text-shadow-foreground/20 font-medium
+                text-2xl
+              ">{record.amount}</div>
             </div>
-            <div className="m-2"><b>Note:</b></div>
+            <div
+              className="self-center my-4 border-1 border-foreground w-fit rounded-full px-4"
+              style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#171717", "#ffffff") }}
+            >
+              {record.category}
+            </div>
+            <div className="mt-4 font-semibold select-none">Note:</div>
             <textarea
-              className="m-2 bg-white min-w-0 w-52 h-fit resize-none"
+              className="
+                mt-2 mb-4 p-2 min-w-0 resize-none
+                bg-background2/50 border-1
+                w-52 h-fit text-lg
+              "
+              style={{ scrollbarWidth: "none" }}
               name="note"
               value={note}
               onChange={onNoteChange}
               ref={noteTextarea}
             />
             <button
-              className="bg-green-600 text-white m-2 p-4 cursor-pointer disabled:cursor-default disabled:opacity-50"
+              className="
+                my-4
+                bg-foreground text-background font-medium border-1 rounded-full cursor-pointer disabled:cursor-default disabled:opacity-50 overflow-hidden select-none
+                px-10 py-1
+              "
               onClick={submitHandler}
               disabled={submitting}
             >Submit</button>
