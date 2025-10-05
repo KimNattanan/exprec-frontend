@@ -1,5 +1,5 @@
-import { Record } from "@/utils/types/Record";
-import { getContrastYIQ } from "@/utils/utils";
+import { Record } from "@/types/api";
+import { getContrastYIQ } from "@/lib/utils";
 import { MouseEventHandler } from "react";
 import { IoIosClose } from "react-icons/io";
 
@@ -17,41 +17,49 @@ export default function RecordBox({ record, editMode, deleteHandler }: { record:
     return `${hours}:${minutes}:${seconds}`;
   }
   return (
-    <div className="border-2 my-2 p-4 relative">
+    <div className="border-2 rounded-xl border-dashed my-4 p-8 relative overflow-hidden">
       {editMode &&
         <div
-          className="bg-red-600 absolute text-4xl text-white top-0 right-0 cursor-pointer"
+          className="bg-bad absolute text-4xl text-white top-0 right-0 cursor-pointer"
           onClick={deleteHandler}
         >
           <IoIosClose/>
         </div>
       }
-      <div className="flex mb-2 text-sm">
-        <div className="mx-2">{date.getDate()}</div>
+      <div className="flex mb-2 text-foreground3 font-semibold text-xl">
+        <div className="mr-2">{date.getDate()}</div>
         <div className="mx-2">{monthNames[date.getMonth()]}</div>
         <div className="mx-2">{date.getFullYear()}</div>
-        <div className="mx-2">{formatTime()}</div>
+        <div className="ml-2">{formatTime()}</div>
       </div>
-      <div className="grid grid-cols-[max-content_1fr]">
-        <div className="pr-4 my-4">
+      <div className="grid grid-cols-[max-content_1fr] text-2xl">
+        <div className="my-4 text-right">
           Amount :
         </div>
-        <div className="self-center font-bold text-xl">
-          {record.amount}
+        <div className="
+          self-center
+          text-shadow-sm text-shadow-foreground/20 font-medium
+          text-4xl ml-8
+        ">
+          {record.amount.toFixed(2)}
         </div>
-        <div className="pr-4 my-4">
+        <div className="my-4 text-right">
           Category :
         </div>
         <div
-          className="self-center border-1 border-foreground w-fit rounded-full px-4"
+          className="
+            self-center w-fit
+            border-1 border-foreground rounded-full
+            px-8 ml-8
+          "
           style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#171717", "#ffffff") }}
         >
           {record.category}
         </div>
-        <div className="pr-4 my-4">
+        <div className="my-4 text-right">
           Note :
         </div>
-        <div className="self-center">
+        <div className="self-center ml-8">
           {record.note || '-'}
         </div>
       </div>

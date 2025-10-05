@@ -1,10 +1,10 @@
-import { getContrastYIQ } from "@/utils/utils";
+import { getContrastYIQ } from "@/lib/utils";
 import { MouseEventHandler } from "react";
 import { IoIosClose } from "react-icons/io";
 
-type Props<Value extends string|number> = {
+type Props = {
   edit_mode: boolean;
-  value: Value;
+  value: string;
   bg_color: string;
   selectHandler: MouseEventHandler;
   deleteHandler: MouseEventHandler;
@@ -13,7 +13,7 @@ type Props<Value extends string|number> = {
   editHandler: MouseEventHandler;
 }
 
-export default function TagBox<Value extends string|number>({
+export default function TagBox({
   edit_mode,
   value,
   bg_color,
@@ -22,7 +22,7 @@ export default function TagBox<Value extends string|number>({
   insertLeftHandler,
   insertRightHandler,
   editHandler,
-}: Props<Value>) {
+}: Props) {
   if(edit_mode){ // edit mode
     return (
       <div

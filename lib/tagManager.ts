@@ -4,7 +4,6 @@ type LinkedTag = {
   id: string;
   prev_id?: string;
   next_id?: string;
-  user_id?: string;
 };
 
 type TagManagerProps<Tag extends LinkedTag> = {
@@ -28,7 +27,7 @@ export default function useTagManager<Tag extends LinkedTag>({
     const arr: Tag[] = [];
     let x = res.find(tag => !tag.prev_id);
     while (x) {
-      arr.push({ ...x, user_id: '' });
+      arr.push(x);
       if (!x.next_id) break;
       x = res.find(tag => tag.id === (x ? x.next_id : ''));
     }
@@ -46,10 +45,10 @@ export default function useTagManager<Tag extends LinkedTag>({
       const updatedTags: Tag[] = lastTag
         ? [
             ...tags.slice(0, -1),
-            { ...lastTag, next_id: newTag.id, user_id: '' },
-            { ...newTag, user_id: '' }
+            { ...lastTag, next_id: newTag.id },
+            newTag
           ]
-        : [{ ...newTag, user_id: '' }];
+        : [newTag];
       setTags(updatedTags);
       return;
     }
@@ -62,14 +61,13 @@ export default function useTagManager<Tag extends LinkedTag>({
       const nextIndex = (prevIndex + 1 == tags.length ? -1 : prevIndex + 1);
       const nextTag = nextIndex !== -1 ? tags[nextIndex] : undefined;
 
-      const updatedPrevTag = { ...prevTag, next_id: newTag.id, user_id: '' };
-      const updatedNewTag = { ...newTag, user_id: '' };
+      const updatedPrevTag = { ...prevTag, next_id: newTag.id };
       const updatedNextTag = nextTag ? { ...nextTag, prev_id: newTag.id } : undefined;
 
       const newTags: Tag[] = [
         ...tags.slice(0, prevIndex),
         updatedPrevTag,
-        updatedNewTag,
+        newTag,
         ...(updatedNextTag ? [updatedNextTag] : []),
         ...(nextIndex !== -1 ? tags.slice(nextIndex + 1) : [])
       ];
@@ -87,13 +85,12 @@ export default function useTagManager<Tag extends LinkedTag>({
       const prevTag = prevIndex !== -1 ? tags[prevIndex] : undefined;
 
       const updatedNextTag = { ...nextTag, prev_id: newTag.id };
-      const updatedNewTag = { ...newTag, user_id: '' };
       const updatedPrevTag = prevTag ? { ...prevTag, next_id: newTag.id } : undefined;
 
       const newTags: Tag[] = [
         ...(prevIndex !== -1 ? tags.slice(0, prevIndex) : []),
         ...(updatedPrevTag ? [updatedPrevTag] : []),
-        updatedNewTag,
+        newTag,
         updatedNextTag,
         ...(nextIndex + 1 < tags.length ? tags.slice(nextIndex + 1) : [])
       ];

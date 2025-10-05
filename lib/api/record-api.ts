@@ -1,13 +1,15 @@
 'use client'
 
-import { Record } from "../types/Record";
+import { Record } from "@/types/api";
 
-const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchRecords(page: number) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/records?page='+page);
+    const res = await fetch(`${BACKEND_URL}/api/v2/records?page=${page}`,{
+      method: "GET",
+      credentials: "include",
+    });
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -22,12 +24,13 @@ export async function fetchRecords(page: number) {
 
 export async function createRecord(record: Record) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/records', {
+    const res = await fetch(`${BACKEND_URL}/api/v2/records`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(record)
+      body: JSON.stringify(record),
+      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());
@@ -43,9 +46,9 @@ export async function createRecord(record: Record) {
 
 export async function deleteRecord(id: string) {
   try{
-    console.log(BACKEND_URL+'/api/v2/records/'+id);
-    const res = await fetch(BACKEND_URL+'/api/v2/records/'+id, {
-      method: 'DELETE'
+    const res = await fetch(`${BACKEND_URL}/api/v2/records/${id}`, {
+      method: 'DELETE',
+      credentials: "include",
     })
     if(!res.ok){
       console.error(await res.json());

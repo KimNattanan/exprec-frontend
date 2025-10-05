@@ -18,11 +18,12 @@ export async function middleware(req: NextRequest) {
 
     const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jwtVerify(loginToken.value, secret);
-    const user = payload.user as UserInterface
+    const userId = payload.user_id as string
+    const user = payload.user_info as UserInterface
 
     const headers = new Headers(req.headers);
     headers.set('x-user', JSON.stringify({
-      id: user.id,
+      id: userId,
       email: user.email,
     }));
     headers.set('x-user-id', user.id);
@@ -35,5 +36,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!login|register|_next|favicon.ico).*)'], 
+  matcher: ['/((?!login|_next|favicon.ico).*)'], 
 }

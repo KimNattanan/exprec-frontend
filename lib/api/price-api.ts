@@ -1,15 +1,18 @@
 'use client'
 
-import { Category } from "../types/Category";
+import { Price } from "@/types/api";
 
-const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
-export async function fetchCategories() {
+export async function fetchPrices() {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/categories');
+    const res = await fetch(`${BACKEND_URL}/api/v2/prices`,{
+      method: "GET",
+      credentials: "include",
+    });
+    console.log("wowza");
     if(!res.ok){
-      console.error(await res.json());
+      console.error("test1", await res.json());
       return null;
     }
     const data = await res.json();
@@ -20,17 +23,20 @@ export async function fetchCategories() {
   }
 }
 
-export async function createCategory(prev_id: string|undefined, next_id: string|undefined) {
+export async function createPrice(prev_id: string|undefined, next_id: string|undefined) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/categories', {
+    const res = await fetch(`${BACKEND_URL}/api/v2/prices`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         prev_id,
-        next_id
-      })
+        next_id,
+        amount: 100,
+        bg_color: "#ffffff"
+      }),
+      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());
@@ -44,30 +50,32 @@ export async function createCategory(prev_id: string|undefined, next_id: string|
   }
 }
 
-export async function deleteCategory(id: string) {
+export async function deletePrice(id: string) {
   try{
-    const res = await fetch(BACKEND_URL+'/api/v2/categories/'+id, {
-      method: 'DELETE'
-    })
+    const res = await fetch(`${BACKEND_URL}/api/v2/prices/${id}`, {
+      method: 'DELETE',
+      credentials: "include",
+    });
     if(!res.ok){
       console.error(await res.json());
       return false;
     }
     return true;
   } catch(error) {
-    console.error(error)
+    console.error(error);
     return false;
   }
 }
 
-export async function patchCategory(id: string, category: Category) {
+export async function patchPrice(id: string, price: Price) {
   try{
-    const res = await fetch(BACKEND_URL+'/api/v2/categories/'+id, {
+    const res = await fetch(`${BACKEND_URL}/api/v2/prices/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(category)
+      body: JSON.stringify(price),
+      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());

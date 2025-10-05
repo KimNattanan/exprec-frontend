@@ -1,13 +1,28 @@
 'use client'
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Preference } from "../types/Preference";
+import { Preference } from "@/types/api";
 
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
+const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
+
+export async function getUser() {
+  try{
+    const res = await fetch(`${FRONTEND_URL}/api/me`);
+    if(!res.ok){
+      console.error(await res.json());
+      return null;
+    }
+    return JSON.parse(await res.json());
+  } catch(error) {
+    console.error(error);
+    return null;
+  }
+}
 
 export async function logoutUser(router: AppRouterInstance){
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/logout', {
+    const res = await fetch(`${FRONTEND_URL}/api/me/logout`, {
       method: 'POST'
     });
     if(!res.ok){
@@ -22,8 +37,9 @@ export async function logoutUser(router: AppRouterInstance){
 
 export async function deleteUser(router: AppRouterInstance) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me', {
-      method: 'DELETE'
+    const res = await fetch(`${BACKEND_URL}/api/v2/users`, {
+      method: 'DELETE',
+      credentials: 'include'
     });
     if(!res.ok){
       console.error(await res.json());
@@ -37,23 +53,12 @@ export async function deleteUser(router: AppRouterInstance) {
   }
 }
 
-export async function getUser() {
-  try{
-    const res = await fetch(FRONTEND_URL+'/api/me');
-    if(!res.ok){
-      console.error(await res.json());
-      return null;
-    }
-    return JSON.parse(await res.json());
-  } catch(error) {
-    console.error(error);
-    return null;
-  }
-}
-
 export async function getUserPreference() {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/preference');
+    const res = await fetch(`${BACKEND_URL}/api/v2/preferences`,{
+      method: "GET",
+      credentials: "include"
+    });
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -67,12 +72,13 @@ export async function getUserPreference() {
 }
 export async function setUserPreference(preference: Preference) {
   try{
-    const res = await fetch(FRONTEND_URL+'/api/me/preference',{
+    const res = await fetch(`${BACKEND_URL}/api/v2/preferences`,{
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(preference)
+      body: JSON.stringify(preference),
+      credentials: "include"
     });
     if(!res.ok){
       console.error(await res.json());

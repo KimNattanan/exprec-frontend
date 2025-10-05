@@ -1,7 +1,7 @@
 'use client'
 
-import { getUser, getUserPreference, logoutUser, setUserPreference } from "@/utils/api/user-api";
-import { Preference } from "@/utils/types/Preference";
+import { getUser, getUserPreference, logoutUser, setUserPreference } from "@/lib/api/user-api";
+import { Preference } from "@/types/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
@@ -16,6 +16,7 @@ export default function NavigateBar() {
   const [themeState, setThemeState] = useState('light');
 
   const setTheme = (theme: string)=>{
+    if(theme == themeState) return;
     setThemeState(theme);
     setUserPreference({ theme });
     const root = document.documentElement;
@@ -42,7 +43,7 @@ export default function NavigateBar() {
   },[])
 
   return (
-    <div className="sticky flex items-center top-0 w-full h-16  bg-background z-50">
+    <div className="sticky bg-background transition-colors duration-500 flex items-center top-0 w-full h-16 z-50">
       <div className="flex h-full items-center grow">
         <Link href={'/'} className="h-full px-8">
           <div className="h-full flex items-center justify-center text-xl">
@@ -54,23 +55,23 @@ export default function NavigateBar() {
           {userEmail}
           { userEmail != '...' &&
             <span
-              className="ml-4 px-4 py-1 border-2 border-red-700 rounded-lg text-red-700 hover:bg-red-50 cursor-pointer text-xs font-bold"
+              className="ml-4 px-4 py-1 border-2 border-bad bg-bad hover:bg-background text-background hover:text-bad rounded-full cursor-pointer text-sm font-semibold"
               onClick={()=>logoutUser(router)}
             >Logout</span>
           }
         </div>
       </div>
       <div className="flex h-full items-center justify-end">
-        <Link href={'/'} className="h-full mx-8">
-          <div className="h-full aspect-square flex items-center justify-center text-xl">
-            Home
-          </div>
-        </Link>
-        <Link href={'/history'} className="h-full mx-8">
-          <div className="h-full aspect-square flex items-center justify-center text-xl">
-            History
-          </div>
-        </Link>
+        <div className="h-full mx-8 aspect-square flex items-center justify-center text-xl">
+          <Link href={'/'}>
+            <div className="hover:border-b-2">Home</div>
+          </Link>
+        </div>
+        <div className="h-full mx-8 aspect-square flex items-center justify-center text-xl">
+          <Link href={'/history'}>
+            <div className="hover:border-b-2">History</div>
+          </Link>
+        </div>
         <div
           className="cursor-pointer mx-8 select-none h-full aspect-square flex items-center justify-center text-4xl"
           onClick={toggleTheme}

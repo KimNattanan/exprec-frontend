@@ -1,21 +1,17 @@
 'use client'
 
-import { Price } from "@/utils/types/Price"
-import { createPrice, deletePrice, fetchPrices } from "@/utils/api/price-api";
+import { Price, Category, Record } from "@/types/api"
+import { createPrice, deletePrice, fetchPrices } from "@/lib/api/price-api";
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-// import PriceBox from "./PriceBox";
-import useTagManager from "@/utils/tagManager";
-import { Category } from "@/utils/types/Category";
-// import CategoryBox from "./CategoryBox";
-import { createCategory, deleteCategory, fetchCategories } from "@/utils/api/category-api";
-import { Record } from "@/utils/types/Record";
+import useTagManager from "@/lib/tagManager";
+import { createCategory, deleteCategory, fetchCategories } from "@/lib/api/category-api";
 import { IoIosArrowBack } from "react-icons/io";
-import { createRecord } from "@/utils/api/record-api";
+import { createRecord } from "@/lib/api/record-api";
 import { CiEdit } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 import PriceEditForm from "./PriceEditForm";
 import CategoryEditForm from "./CategoryEditForm";
-import { getContrastYIQ } from "@/utils/utils";
+import { getContrastYIQ } from "@/lib/utils";
 import TagBox from "./TagBox";
 
 
@@ -117,18 +113,31 @@ export default function TransactionForm() {
           closeForm={()=>setEdittingCategory(-1)}
         />
       }
-      <div className="bg-background w-full h-[calc(100dvh-4rem)] relative">
+      <div className="w-full h-[calc(100dvh-4rem)] relative">
         {page != 0 && // back button
           <div
-            className="fixed left-16 bottom-16 bg-gray-600 rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
+            className="
+              fixed z-50
+              bg-foreground text-background transition-all duration-1000 rounded-full cursor-pointer shadow-md shadow-foreground/50
+              text-4xl p-2 left-16 bottom-16
+            "
             onClick={()=>setPage(page-1)}
           >
-            <IoIosArrowBack/>
+            <div className="
+              flex items-center justify-center w-fit h-fit
+              rounded-full border-3 p-4
+            ">
+              <IoIosArrowBack/>
+            </div>
           </div>
         }
         {(page == 0 && priceFetched || page == 1 && categoryFetched) && // edit button
           <div
-            className="fixed bg-gray-600 transition-all rounded-full aspect-square text-white flex items-center justify-center w-fit h-fit text-4xl p-2 cursor-pointer"
+            className="
+              fixed z-50
+              bg-foreground text-background transition-all duration-1000 rounded-full cursor-pointer shadow-md shadow-foreground/50
+              text-4xl p-2
+            "
             style={{
               right: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
               bottom: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
@@ -136,7 +145,12 @@ export default function TransactionForm() {
             }}
             onClick={()=>setEditMode(!editMode)}
           >
-            {editMode ? <MdDone/> : <CiEdit/>}
+            <div className="
+              flex items-center justify-center w-fit h-fit
+              rounded-full border-3 p-4
+            ">
+              {editMode ? <MdDone/> : <CiEdit/>}
+            </div>
           </div>
         }
         {page == 0 && (
@@ -145,7 +159,7 @@ export default function TransactionForm() {
               <TagBox
                 key={i}
                 edit_mode={editMode}
-                value={v.amount}
+                value={v.amount.toFixed(2)}
                 bg_color={v.bg_color}
                 selectHandler={priceSelectHandler(i)}
                 deleteHandler={priceManager.deleteHandler(i)}
@@ -156,7 +170,11 @@ export default function TransactionForm() {
             ))}
             {editMode && prices.length == 0 &&
               <button
-                className="flex items-center justify-center bg-amber-200 w-32 h-32 m-2 cursor-pointer"
+                className="
+                  flex items-center justify-center
+                  bg-good text-background font-medium cursor-pointer rounded-full
+                  px-12 text-4xl
+                "
                 onClick={priceManager.insertLastHandler}
               >add price</button>
             }
@@ -179,7 +197,11 @@ export default function TransactionForm() {
             ))}
             {editMode && categories.length == 0 &&
               <button
-                className="flex items-center justify-center bg-amber-200 w-32 h-32 m-2 cursor-pointer"
+                className="
+                  flex items-center justify-center
+                  bg-good text-background font-medium cursor-pointer rounded-full
+                  px-12 text-4xl
+                "
                 onClick={categoryManager.insertLastHandler}
               >add category</button>
             }

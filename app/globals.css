@@ -16,10 +16,11 @@ input[type=number] {
 
 :root {
   --background: #ffffff;
-  --background2: #fff2d5;
+  --background2: #fff3d1;
   --foreground: #524439;
-  --foreground2: #8b796c;
-  --good: #00ffd574;
+  --foreground2: #000000;
+  --foreground3: #feba00;
+  --good: #14d084;
   --bad: #ce2512;
 }
 
@@ -37,6 +38,7 @@ input[type=number] {
   --color-background2: var(--background2);
   --color-foreground: var(--foreground);
   --color-foreground2: var(--foreground2);
+  --color-foreground3: var(--foreground3);
   --color-good: var(--good);
   --color-bad: var(--bad);
   --font-sans: var(--font-geist-sans);

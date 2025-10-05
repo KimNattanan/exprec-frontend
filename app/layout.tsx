@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased transition-colors duration-500`}
       >
         {children}
       </body>

@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteUser } from "@/utils/api/user-api";
+import { deleteUser } from "@/lib/api/user-api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,7 +10,6 @@ export default function Settings() {
 
   const [showDeleteUserConfirm, setShowDeleteUserConfirm] = useState(false)
   const [deletingUser, setDeletingUser] = useState(false)
-  // const [showChangePassword, setShowChangePassword] = useState(false)
 
   const userDeleteHandler = ()=>{
     setDeletingUser(true);
@@ -20,16 +19,28 @@ export default function Settings() {
   return (
     <>
       { showDeleteUserConfirm &&
-        <div className="fixed w-dvw h-dvh bg-[rgba(0,0,0,0.5)]">
-          <div className="bg-white w-80 p-4 rounded shadow-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="fixed w-dvw h-dvh bg-foreground/50">
+          <div className="
+            fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            bg-background shadow-md
+            w-80 p-4
+          ">
             <div className="mb-4">Are you sure you want to delete your account? This action cannot be undone.</div>
             <div className="flex">
               <button
-                className="bg-teal-200 px-4 py-2 rounded hover:bg-teal-300 mr-auto cursor-pointer"
+                className="
+                  mr-auto h-fit
+                  bg-good rounded-full cursor-pointer
+                  px-8 py-1
+                "
                 onClick={()=>setShowDeleteUserConfirm(false)}
               >Cancel</button>
               <button
-                className="bg-red-200 px-4 py-2 rounded hover:bg-red-300 ml-auto cursor-pointer disabled:opacity-50 disabled:cursor-default"
+                className="
+                  ml-auto h-fit
+                  bg-bad text-background rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default
+                  px-8 py-1
+                "
                 onClick={userDeleteHandler}
                 disabled={deletingUser}
               >Confirm</button>
@@ -38,45 +49,13 @@ export default function Settings() {
         </div>
       }
       <div className="p-10">
-        {/* <div className="my-4">
-          <button
-            className="w-fit bg-gray-200 px-4 py-2 rounded-lg border-b-2 cursor-pointer"
-            onClick={()=>setShowChangePassword(!showChangePassword)}
-          >
-            Change Password
-          </button>
-          { showChangePassword &&
-            <div className="mt-4">
-              <form action="/api/me/change-password" method="POST" className="flex flex-col max-w-sm">
-                <div className="mb-4">
-                  <label className="block mb-1">New Password:</label>
-                  <input
-                    className="w-full border border-gray-300 rounded px-2 py-1"
-                    type="password"
-                    name="newPassword"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-1">Confirm New Password:</label>
-                  <input
-                    className="w-full border border-gray-300 rounded px-2 py-1"
-                    type="password"
-                    name="confirmNewPassword"
-                    required
-                  />
-                </div>
-                <button
-                  className="w-fit bg-teal-200 px-4 py-2 rounded hover:bg-teal-300 cursor-pointer"
-                  type="submit"
-                >Update Password</button>
-              </form>
-            </div>
-          }
-        </div> */}
         <div className="my-4">
           <button
-            className="w-fit bg-red-200 hover:bg-red-300 px-4 py-2 rounded-lg border-b-2 cursor-pointer"
+            className="
+              w-fit
+              bg-bad text-background rounded-full cursor-pointer
+              px-12 py-2
+            "
             onClick={()=>setShowDeleteUserConfirm(!showDeleteUserConfirm)}
           >Delete Account</button>
         </div>

@@ -1,7 +1,7 @@
 'use client'
 
-import { patchCategory } from "@/utils/api/category-api";
-import { Category } from "@/utils/types/Category";
+import { patchCategory } from "@/lib/api/category-api";
+import { Category } from "@/types/api";
 import { Dispatch, SetStateAction, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 
@@ -42,72 +42,73 @@ export default function CategoryEditForm({
       bg-foreground/50
       w-dvw h-[calc(100dvh-4rem)]
     ">
-      <div className="
-        relative flex flex-col items-center
-        bg-background
-        w-96 h-fit p-12
-      ">
-        <div
-          className="
-            absolute  
-            bg-bad text-white cursor-pointer
-            text-4xl top-0 right-0
-          "
-          onClick={closeForm}
+      <div className="bg-background shadow-md p-4">
+        <div className="
+          relative flex flex-col items-center
+          w-96 h-fit p-12
+        ">
+          <div
+            className="
+              absolute  
+              bg-foreground3 hover:bg-foreground transition-all duration-400 text-background rounded-full cursor-pointer overflow-hidden
+              text-4xl top-0 right-0
+            "
+            onClick={closeForm}
+            >
+            <IoIosClose/>
+          </div>
+          <div className="grid grid-cols-[max-content_1fr] mb-2">
+            <div className="
+              text-end content-center
+              font-medium
+              my-2 text-xl
+            ">
+              Title :
+            </div>
+            <div className="flex items-center h-full ml-4">
+              <input
+                className="
+                  min-w-0 w-full h-fit text-center
+                  border-1
+                  text-xl
+                "
+                title="title"
+                type="text"
+                value={newCategory.title}
+                onChange={(e)=>setNewCategory({ ...newCategory, title: e.target.value })}
+              />
+            </div>
+            <div className="
+              text-end content-center
+              font-medium
+              my-2 text-xl
+            ">
+              Color : 
+            </div>
+            <div className="flex items-center h-full ml-4">
+              <input
+                className="min-w-0 w-full h-full"
+                title="background color"
+                type="color"
+                value={newCategory.bg_color}
+                onChange={(e)=>setNewCategory({ ...newCategory, bg_color: e.target.value })}
+              />
+            </div>
+          </div>
+          <button
+            className="
+              bg-foreground text-background disabled:opacity-50 cursor-pointer font-medium rounded-full
+              px-12 py-2 my-2 text-xl
+            "
+            onClick={submit}
+            disabled={submitting}
           >
-          <IoIosClose/>
+            Save
+          </button>
+          {!submitting && 
+            <div className="text-bad text-sm">{submitMessage}</div>
+          }
         </div>
-        <div className="grid grid-cols-2 mb-2">
-          <div className="
-            text-center content-center
-            font-medium
-            my-2 text-xl
-          ">
-            Title :
-          </div>
-          <div className="flex items-center h-full">
-            <input
-              className="
-                min-w-0 w-full h-fit text-center
-                border-1
-                text-xl
-              "
-              title="title"
-              type="text"
-              value={newCategory.title}
-              onChange={(e)=>setNewCategory({ ...newCategory, title: e.target.value })}
-            />
-          </div>
-          <div className="
-            text-center content-center
-            font-medium
-            my-2 text-xl
-          ">
-            Color : 
-          </div>
-          <div className="flex items-center h-full">
-            <input
-              className="min-w-0 w-full h-full"
-              title="background color"
-              type="color"
-              value={newCategory.bg_color}
-              onChange={(e)=>setNewCategory({ ...newCategory, bg_color: e.target.value })}
-            />
-          </div>
-        </div>
-        <button
-          className="
-            bg-foreground text-background disabled:opacity-50 cursor-pointer font-medium rounded-full
-            px-12 py-2 my-2 text-xl
-          "
-          onClick={submit}
-          disabled={submitting}
-        >
-          Save
-        </button>
-        {!submitting && 
-          <div className="text-red-500 text-sm">{submitMessage}</div>
-        }
       </div>
     </div>
   )
