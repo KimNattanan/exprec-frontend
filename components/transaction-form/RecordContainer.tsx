@@ -71,10 +71,8 @@ function Paginator({
   )
 }
 
-export default function RecordContainer() {
-  const searchParams = useSearchParams()
-  const pageStr = searchParams.get('page') || '1'
-  const page = parseInt(pageStr, 10) || 1
+export default function RecordContainer({ page }:{ page: number }) {
+  // const page = parseInt(searchParams.page || '1', 10) || 1
   
   const [pagination, setPagination] = useState<Pagination>({totalPages: 1} as Pagination)
   const [editMode, setEditMode] = useState(false)

@@ -30,17 +30,16 @@ export async function createRecord(record: Record) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(record),
-      credentials: "include",
+      credentials: 'include',
     });
-    if(!res.ok){
-      console.error(await res.json());
-      return null;
-    }
     const data = await res.json();
-    return data;
+    if(!res.ok){
+      return { data: null, error: data.error};
+    }
+    return { data, error: '' };
   } catch(error) {
     console.error(error);
-    return null;
+    return { data: null, error: 'Network error' };
   }
 }
 

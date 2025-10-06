@@ -14,7 +14,7 @@ import CategoryEditForm from "./CategoryEditForm";
 import { getContrastYIQ } from "@/lib/utils";
 import TagBox from "./TagBox";
 
-
+const MAX_TAGS = 30;
 const NOTE_MAXLENGTH = 50;
 
 export default function TransactionForm() { 
@@ -71,10 +71,10 @@ export default function TransactionForm() {
 
   const submitHandler = async ()=>{
     setSubmitting(true);
-    const ok = await createRecord({ ...record, note: note } as Record);
+    const { error } = await createRecord({ ...record, note: note } as Record);
     setSubmitting(false);
-    if(!ok){
-      setSubmitMessage("Failed to submit record")
+    if(error){
+      setSubmitMessage(error)
       return;
     }
     setRecord({} as Record);
@@ -166,6 +166,7 @@ export default function TransactionForm() {
                 insertLeftHandler={priceManager.insertLeftHandler(i)}
                 insertRightHandler={priceManager.insertRightHandler(i)}
                 editHandler={()=>setEdittingPrice(i)}
+                insertable={prices.length < MAX_TAGS}
               />
             ))}
             {editMode && prices.length == 0 &&
@@ -193,6 +194,7 @@ export default function TransactionForm() {
                 insertLeftHandler={categoryManager.insertLeftHandler(i)}
                 insertRightHandler={categoryManager.insertRightHandler(i)}
                 editHandler={()=>setEdittingCategory(i)}
+                insertable={prices.length < MAX_TAGS}
               />
             ))}
             {editMode && categories.length == 0 &&

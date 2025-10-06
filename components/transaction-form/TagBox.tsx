@@ -11,6 +11,7 @@ type Props = {
   insertLeftHandler: MouseEventHandler;
   insertRightHandler: MouseEventHandler;
   editHandler: MouseEventHandler;
+  insertable: boolean;
 }
 
 export default function TagBox({
@@ -22,6 +23,7 @@ export default function TagBox({
   insertLeftHandler,
   insertRightHandler,
   editHandler,
+  insertable,
 }: Props) {
   if(edit_mode){ // edit mode
     return (
@@ -42,14 +44,15 @@ export default function TagBox({
         >
           <IoIosClose/>
         </div>
-        <div
+        <button
           className="
             text-center content-center
-            bg-foreground2 text-background cursor-pointer
+            bg-foreground2 text-background cursor-pointer disabled:opacity-50
             h-40 w-6
           "
           onClick={insertLeftHandler}
-        >{"<<"}</div>
+          disabled={!insertable}
+        >{"<<"}</button>
         <div
           className="
             flex flex-col items-center justify-center
@@ -61,14 +64,15 @@ export default function TagBox({
           <div>{value}</div>
           <div className="text-xs">{'《 click to edit 》'}</div>
         </div>
-        <div
+        <button
           className="
             text-center content-center
-            bg-foreground2 text-background cursor-pointer
+            bg-foreground2 text-background cursor-pointer disabled:opacity-50
             h-40 w-6
           "
           onClick={insertRightHandler}
-        >{">>"}</div>
+          disabled={!insertable}
+        >{">>"}</button>
       </div>
     )
   }
