@@ -1,8 +1,10 @@
 import RecordContainer from "@/components/transaction-form/RecordContainer";
+import { Suspense } from "react";
 
-export default function History({ searchParams }:{ searchParams: { page?: string } }){
-  const page = parseInt(searchParams.page || '1', 10) || 1
+export default function History(){
   return (
-    <RecordContainer page={page}/>
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecordContainer/>
+    </Suspense>
   )
 }
