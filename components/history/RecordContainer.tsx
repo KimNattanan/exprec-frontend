@@ -119,7 +119,7 @@ export default function RecordContainer() {
     setDeletable(false)
     try{
       if(!(await deleteRecord(records[id].id))) return
-      doFetchRecords()
+      await doFetchRecords()
     } finally {
       setDeletable(true)
     }
