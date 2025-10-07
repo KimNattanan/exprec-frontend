@@ -28,7 +28,7 @@ export default async function History(){
               <HistoryPaginator/>
           </HistoryContextProvider>
         </Suspense>
-        </div>
+      </div>
       <Footer/>
     </>
   )

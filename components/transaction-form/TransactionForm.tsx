@@ -185,11 +185,12 @@ export default function TransactionForm() {
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-white font-medium cursor-pointer rounded-full
+                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50
                   xs:text-4xl
                   px-12 text:2xl
                 "
                 onClick={priceManager.insertLastHandler}
+                disabled={!deletable}
               >add price</button>
             }
           </div>
@@ -215,11 +216,12 @@ export default function TransactionForm() {
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-white font-medium cursor-pointer rounded-full
+                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50
                   xs:text-4xl
                   px-12 text-2xl
                 "
                 onClick={categoryManager.insertLastHandler}
+                disabled={!deletable}
               >add category</button>
             }
           </div>
