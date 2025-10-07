@@ -185,7 +185,7 @@ export default function TransactionForm() {
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50
+                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50 disabled:cursor-default
                   xs:text-4xl
                   px-12 text:2xl
                 "
@@ -216,7 +216,7 @@ export default function TransactionForm() {
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50
+                  bg-good text-white font-medium cursor-pointer rounded-full disabled:opacity-50 disabled:cursor-default
                   xs:text-4xl
                   px-12 text-2xl
                 "
