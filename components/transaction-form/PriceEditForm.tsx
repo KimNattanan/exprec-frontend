@@ -12,6 +12,8 @@ type Props = {
   closeForm: ()=>void;
 }
 
+const MAX_PRICE = 9999999.99;
+
 export default function PriceEditForm({
   id,
   price,
@@ -23,7 +25,7 @@ export default function PriceEditForm({
   const [submitMessage, setSubmitMessage] = useState("")
   const submit = async()=>{
     setSubmitting(true);
-    newPrice.amount = Number(newPrice.amount.toFixed(2));
+    newPrice.amount = Math.min(MAX_PRICE, Number(newPrice.amount.toFixed(2)));
     const res = await patchPrice(price.id, newPrice as Price);
     if(!res){
       setSubmitting(false);
@@ -39,14 +41,15 @@ export default function PriceEditForm({
   }
   return (
     <div className="
-      absolute z-10 flex justify-center items-center
+      fixed z-50 flex justify-center items-center
       bg-foreground/50
       w-dvw h-[calc(100dvh-4rem)]
     ">
       <div className="bg-background shadow-md p-4">
         <div className="
-          relative flex flex-col items-center
-          w-96 h-fit p-12
+          relative flex flex-col items-center h-fit
+          xs:w-96 xs:px-12
+          w-72 pt-12 pb-6 px-2
         ">
           <div
             className="
@@ -77,6 +80,7 @@ export default function PriceEditForm({
                 type="number"
                 value={newPrice.amount}
                 onChange={(e)=>setNewPrice({ ...newPrice, amount: Number(e.target.value) })}
+                onWheel={(e: React.WheelEvent<HTMLInputElement>)=>{(e.target as HTMLInputElement).blur()}}
               />
             </div>
             <div className="

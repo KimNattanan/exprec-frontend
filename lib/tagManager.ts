@@ -12,6 +12,7 @@ type TagManagerProps<Tag extends LinkedTag> = {
   fetchFunc: () => Promise<Tag[] | null>;
   createFunc: (prevId?: string, nextId?: string) => Promise<Tag | null>;
   deleteFunc: (id: string) => Promise<boolean>;
+  setDeletable: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function useTagManager<Tag extends LinkedTag>({
@@ -20,6 +21,7 @@ export default function useTagManager<Tag extends LinkedTag>({
   fetchFunc,
   createFunc,
   deleteFunc,
+  setDeletable,
 }: TagManagerProps<Tag>) {
 
   const doFetch = async () => {
@@ -35,90 +37,100 @@ export default function useTagManager<Tag extends LinkedTag>({
   };
 
   const insertTag = async (prevIndex: number, nextIndex: number) => {
-    const tags = getTags();
+    setDeletable(false);
+    try{
+      const tags = getTags();
 
-    if (prevIndex == -1 && nextIndex == -1) {
-      const lastTag = tags[tags.length - 1];
-      const newTag = await createFunc(lastTag?.id, undefined);
-      if (!newTag) return;
+      if (prevIndex == -1 && nextIndex == -1) {
+        const lastTag = tags[tags.length - 1];
+        const newTag = await createFunc(lastTag?.id, undefined);
+        if (!newTag) return;
 
-      const updatedTags: Tag[] = lastTag
-        ? [
-            ...tags.slice(0, -1),
-            { ...lastTag, next_id: newTag.id },
-            newTag
-          ]
-        : [newTag];
-      setTags(updatedTags);
-      return;
-    }
+        const updatedTags: Tag[] = lastTag
+          ? [
+              ...tags.slice(0, -1),
+              { ...lastTag, next_id: newTag.id },
+              newTag
+            ]
+          : [newTag];
+        setTags(updatedTags);
+        return;
+      }
 
-    if (prevIndex != -1) {
-      const prevTag = tags[prevIndex];
-      const newTag = await createFunc(prevTag.id, prevTag.next_id);
-      if (!newTag) return;
+      if (prevIndex != -1) {
+        const prevTag = tags[prevIndex];
+        const newTag = await createFunc(prevTag.id, prevTag.next_id);
+        if (!newTag) return;
 
-      const nextIndex = (prevIndex + 1 == tags.length ? -1 : prevIndex + 1);
-      const nextTag = nextIndex !== -1 ? tags[nextIndex] : undefined;
+        const nextIndex = (prevIndex + 1 == tags.length ? -1 : prevIndex + 1);
+        const nextTag = nextIndex !== -1 ? tags[nextIndex] : undefined;
 
-      const updatedPrevTag = { ...prevTag, next_id: newTag.id };
-      const updatedNextTag = nextTag ? { ...nextTag, prev_id: newTag.id } : undefined;
+        const updatedPrevTag = { ...prevTag, next_id: newTag.id };
+        const updatedNextTag = nextTag ? { ...nextTag, prev_id: newTag.id } : undefined;
 
-      const newTags: Tag[] = [
-        ...tags.slice(0, prevIndex),
-        updatedPrevTag,
-        newTag,
-        ...(updatedNextTag ? [updatedNextTag] : []),
-        ...(nextIndex !== -1 ? tags.slice(nextIndex + 1) : [])
-      ];
+        const newTags: Tag[] = [
+          ...tags.slice(0, prevIndex),
+          updatedPrevTag,
+          newTag,
+          ...(updatedNextTag ? [updatedNextTag] : []),
+          ...(nextIndex !== -1 ? tags.slice(nextIndex + 1) : [])
+        ];
 
-      setTags(newTags);
-      return;
-    }
+        setTags(newTags);
+        return;
+      }
 
-    if (nextIndex != -1) {
-      const nextTag = tags[nextIndex];
-      const newTag = await createFunc(nextTag.prev_id, nextTag.id);
-      if (!newTag) return;
+      if (nextIndex != -1) {
+        const nextTag = tags[nextIndex];
+        const newTag = await createFunc(nextTag.prev_id, nextTag.id);
+        if (!newTag) return;
 
-      const prevIndex = nextIndex - 1;
-      const prevTag = prevIndex !== -1 ? tags[prevIndex] : undefined;
+        const prevIndex = nextIndex - 1;
+        const prevTag = prevIndex !== -1 ? tags[prevIndex] : undefined;
 
-      const updatedNextTag = { ...nextTag, prev_id: newTag.id };
-      const updatedPrevTag = prevTag ? { ...prevTag, next_id: newTag.id } : undefined;
+        const updatedNextTag = { ...nextTag, prev_id: newTag.id };
+        const updatedPrevTag = prevTag ? { ...prevTag, next_id: newTag.id } : undefined;
 
-      const newTags: Tag[] = [
-        ...(prevIndex !== -1 ? tags.slice(0, prevIndex) : []),
-        ...(updatedPrevTag ? [updatedPrevTag] : []),
-        newTag,
-        updatedNextTag,
-        ...(nextIndex + 1 < tags.length ? tags.slice(nextIndex + 1) : [])
-      ];
+        const newTags: Tag[] = [
+          ...(prevIndex !== -1 ? tags.slice(0, prevIndex) : []),
+          ...(updatedPrevTag ? [updatedPrevTag] : []),
+          newTag,
+          updatedNextTag,
+          ...(nextIndex + 1 < tags.length ? tags.slice(nextIndex + 1) : [])
+        ];
 
-      setTags(newTags);
-      return;
+        setTags(newTags);
+        return;
+      }
+    } finally {
+      setDeletable(true);
     }
   };
 
   const deleteTag = async (tagIndex: number) => {
-    const tags = getTags();
-    
-    if (tagIndex < 0 || tagIndex >= tags.length) return;
-    const tag = tags[tagIndex];
+    setDeletable(false);
+    try{
+      const tags = getTags();
+      
+      if (tagIndex < 0 || tagIndex >= tags.length) return;
+      const tag = tags[tagIndex];
 
-    if(!(await deleteFunc(tag.id))) return;
+      if(!(await deleteFunc(tag.id))) return;
 
-    const prevTag = tagIndex-1 == -1 ? null : { ...tags[tagIndex-1], next_id: tag.next_id };
-    const nextTag = tagIndex+1 == tags.length ? null : { ...tags[tagIndex+1], prev_id: tag.prev_id };
+      const prevTag = tagIndex-1 == -1 ? null : { ...tags[tagIndex-1], next_id: tag.next_id };
+      const nextTag = tagIndex+1 == tags.length ? null : { ...tags[tagIndex+1], prev_id: tag.prev_id };
 
-    const newTags: Tag[] = [
-      ...(prevTag ? tags.slice(0, tagIndex-1) : []),
-      ...(prevTag ? [prevTag] : []),
-      ...(nextTag ? [nextTag] : []),
-      ...(nextTag ? tags.slice(tagIndex+2) : []),
-    ];
+      const newTags: Tag[] = [
+        ...(prevTag ? tags.slice(0, tagIndex-1) : []),
+        ...(prevTag ? [prevTag] : []),
+        ...(nextTag ? [nextTag] : []),
+        ...(nextTag ? tags.slice(tagIndex+2) : []),
+      ];
 
-    setTags(newTags);
+      setTags(newTags);
+    } finally {
+      setDeletable(true);
+    }
   };
 
   const insertLastHandler = () => insertTag(-1, -1);

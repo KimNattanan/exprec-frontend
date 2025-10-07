@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteUser } from "@/lib/api/user-api";
+import { deleteUser, logoutUser } from "@/lib/api/user-api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ export default function Settings() {
               <button
                 className="
                   mr-auto h-fit
-                  bg-good rounded-full cursor-pointer
+                  bg-good text-white rounded-full cursor-pointer font-medium
                   px-8 py-1
                 "
                 onClick={()=>setShowDeleteUserConfirm(false)}
@@ -38,7 +38,7 @@ export default function Settings() {
               <button
                 className="
                   ml-auto h-fit
-                  bg-bad text-background rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default
+                  bg-bad text-white rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default font-medium
                   px-8 py-1
                 "
                 onClick={userDeleteHandler}
@@ -53,8 +53,18 @@ export default function Settings() {
           <button
             className="
               w-fit
-              bg-bad text-background rounded-full cursor-pointer
-              px-12 py-2
+              bg-foreground3 text-background rounded-full cursor-pointer font-medium
+              px-12 py-1
+            "
+            onClick={()=>logoutUser(router)}
+          >Logout</button>
+        </div>
+        <div className="my-4">
+          <button
+            className="
+              w-fit
+              bg-bad text-background rounded-full cursor-pointer font-medium
+              px-12 py-1
             "
             onClick={()=>setShowDeleteUserConfirm(!showDeleteUserConfirm)}
           >Delete Account</button>

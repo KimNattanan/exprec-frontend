@@ -12,6 +12,8 @@ type Props = {
   closeForm: ()=>void;
 }
 
+const MAX_LENGTH = 50;
+
 export default function CategoryEditForm({
   id,
   category,
@@ -38,14 +40,15 @@ export default function CategoryEditForm({
   }
   return (
     <div className="
-      absolute z-10 flex justify-center items-center
+      fixed z-50 flex justify-center items-center
       bg-foreground/50
       w-dvw h-[calc(100dvh-4rem)]
     ">
       <div className="bg-background shadow-md p-4">
         <div className="
-          relative flex flex-col items-center
-          w-96 h-fit p-12
+          relative flex flex-col items-center h-fit
+          xs:w-96 xs:px-12
+          w-72 pt-12 pb-6 px-2
         ">
           <div
             className="
@@ -70,12 +73,15 @@ export default function CategoryEditForm({
                 className="
                   min-w-0 w-full h-fit text-center
                   border-1
-                  text-xl
+                  xs:text-xl
                 "
                 title="title"
                 type="text"
                 value={newCategory.title}
-                onChange={(e)=>setNewCategory({ ...newCategory, title: e.target.value })}
+                onChange={(e)=>{
+                  if(e.target.value.length > MAX_LENGTH) return;
+                  setNewCategory({ ...newCategory, title: e.target.value })
+                }}
               />
             </div>
             <div className="
@@ -98,7 +104,7 @@ export default function CategoryEditForm({
           <button
             className="
               bg-foreground text-background disabled:opacity-50 cursor-pointer font-medium rounded-full
-              px-12 py-2 my-2 text-xl
+              px-12 py-1 my-2 text-xl
             "
             onClick={submit}
             disabled={submitting}

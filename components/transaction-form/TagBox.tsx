@@ -12,6 +12,7 @@ type Props = {
   insertRightHandler: MouseEventHandler;
   editHandler: MouseEventHandler;
   insertable: boolean;
+  deletable: boolean;
 }
 
 export default function TagBox({
@@ -24,51 +25,64 @@ export default function TagBox({
   insertRightHandler,
   editHandler,
   insertable,
+  deletable,
 }: Props) {
   if(edit_mode){ // edit mode
     return (
       <div
         className="
           flex relative
-          rounded-2xl overflow-hidden select-none border-2 border-dashed font-medium
-          m-2 text-xl
+          rounded-2xl overflow-hidden border-2 border-dashed font-medium
+          sm:text-2xl sm:m-2
+          xs:text-xl
+          m-1 text-base
         "
       >
-        <div
+        <button
           className="
             absolute
-            bg-bad text-white cursor-pointer
-            text-4xl top-0 right-6
+            bg-bad text-white cursor-pointer disabled:cursor-default disabled:opacity-50
+            sm:right-6 sm:text-3xl
+            xs:text-2xl
+            right-4 top-0 text-xl
           "
           onClick={deleteHandler}
+          disabled={!deletable}
         >
           <IoIosClose/>
-        </div>
+        </button>
         <button
           className="
             text-center content-center
-            bg-foreground2 text-background cursor-pointer disabled:opacity-50
-            h-40 w-6
+            bg-foreground2 text-background cursor-pointer disabled:cursor-default disabled:opacity-50
+            sm:h-40 sm:w-6 sm:text-lg
+            xs:h-36
+            h-22 text-xs w-4
           "
           onClick={insertLeftHandler}
           disabled={!insertable}
         >{"<<"}</button>
         <div
           className="
-            flex flex-col items-center justify-center
-            h-40 w-28
+            flex flex-col items-center justify-center text-center break-all overflow-hidden
+            sm:h-40 sm:w-28
+            xs:h-36 xs:w-28
+            h-22 w-18
           "
           style={{ backgroundColor: bg_color, color: getContrastYIQ(bg_color, "#524439", "#ffffff") }}
           onClick={editHandler}
         >
           <div>{value}</div>
-          <div className="text-xs">{'《 click to edit 》'}</div>
+          <div className="xs:hidden text-xs">{'《 edit 》'}</div>
+          <div className="hidden xs:block text-xs">{'《 click to edit 》'}</div>
         </div>
         <button
           className="
-            text-center content-center
-            bg-foreground2 text-background cursor-pointer disabled:opacity-50
-            h-40 w-6
+            text-center content-center overflow-hidden
+            bg-foreground2 text-background cursor-pointer disabled:cursor-default disabled:opacity-50
+            sm:h-40 sm:w-6 sm:text-lg
+            xs:h-36
+            h-22 text-xs w-4
           "
           onClick={insertRightHandler}
           disabled={!insertable}
@@ -79,9 +93,11 @@ export default function TagBox({
   return ( // default
     <div
       className="
-        flex flex-col items-center justify-center
-        cursor-pointer rounded-2xl select-none border-2 border-dashed font-medium
-        h-40 w-40 m-2 text-2xl
+        flex flex-col items-center justify-center text-center break-all overflow-hidden
+        rounded-2xl border-2 border-dashed font-medium cursor-pointer
+        sm:h-40 sm:w-40 sm:text-2xl
+        xs:h-36 xs:w-36 xs:text-xl
+        h-22 w-22 m-2 text-base
       "
       style={{ backgroundColor: bg_color, color: getContrastYIQ(bg_color, "#524439", "#ffffff") }}
       onClick={selectHandler}

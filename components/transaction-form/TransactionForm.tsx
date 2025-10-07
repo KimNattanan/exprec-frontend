@@ -24,12 +24,14 @@ export default function TransactionForm() {
   const [categories, setCategories] = useState<Array<Category>>([])
   const [priceFetched, setPriceFetched] = useState(false);
   const [categoryFetched, setCategoryFetched] = useState(false);
+  const [deletable, setDeletable] = useState(true);
   const priceManager = useTagManager<Price>({
     getTags: ()=>prices,
     setTags: setPrices,
     fetchFunc: fetchPrices,
     createFunc: createPrice,
     deleteFunc: deletePrice,
+    setDeletable: setDeletable,
   })
   const categoryManager = useTagManager<Category>({
     getTags: ()=>categories,
@@ -37,6 +39,7 @@ export default function TransactionForm() {
     fetchFunc: fetchCategories,
     createFunc: createCategory,
     deleteFunc: deleteCategory,
+    setDeletable: setDeletable,
   })
   
   const priceSelectHandler = (i: number) => () => {
@@ -117,15 +120,19 @@ export default function TransactionForm() {
         {page != 0 && // back button
           <div
             className="
-              fixed z-50
+              fixed z-40
               bg-foreground text-background transition-all duration-1000 rounded-full cursor-pointer shadow-md shadow-foreground/50
-              text-4xl p-2 left-16 bottom-16
+              sm:left-16 sm:bottom-16
+              xs:text-4xl xs:p-2 xs:left-8 xs:bottom-8
+              text-2xl left-4 bottom-4 p-1
             "
             onClick={()=>setPage(page-1)}
           >
             <div className="
               flex items-center justify-center w-fit h-fit
-              rounded-full border-3 p-4
+              rounded-full
+              xs:p-4 xs:border-3
+              p-3 border-2
             ">
               <IoIosArrowBack/>
             </div>
@@ -134,20 +141,24 @@ export default function TransactionForm() {
         {(page == 0 && priceFetched || page == 1 && categoryFetched) && // edit button
           <div
             className="
-              fixed z-50
+              fixed z-40
               bg-foreground text-background transition-all duration-1000 rounded-full cursor-pointer shadow-md shadow-foreground/50
-              text-4xl p-2
+              sm:right-16 sm:bottom-16
+              xs:text-4xl xs:p-2 xs:right-8 xs:bottom-8
+              text-2xl right-4 bottom-4 p-1
             "
-            style={{
-              right: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
-              bottom: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? '50%' : '4rem',
-              transform: !editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? 'translate(50%, 50%)' : undefined
-            }}
+            style={!editMode && (page==0 && prices.length==0 || page==1 && categories.length==0) ? {
+              right: '50%',
+              bottom: '50%',
+              transform: 'translate(50%, 50%)'
+            }:{}}
             onClick={()=>setEditMode(!editMode)}
           >
             <div className="
               flex items-center justify-center w-fit h-fit
-              rounded-full border-3 p-4
+              rounded-full
+              xs:p-4 xs:border-3
+              p-3 border-2
             ">
               {editMode ? <MdDone/> : <CiEdit/>}
             </div>
@@ -166,15 +177,17 @@ export default function TransactionForm() {
                 insertLeftHandler={priceManager.insertLeftHandler(i)}
                 insertRightHandler={priceManager.insertRightHandler(i)}
                 editHandler={()=>setEdittingPrice(i)}
-                insertable={prices.length < MAX_TAGS}
+                insertable={prices.length < MAX_TAGS && deletable}
+                deletable={deletable}
               />
             ))}
             {editMode && prices.length == 0 &&
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-background font-medium cursor-pointer rounded-full
-                  px-12 text-4xl
+                  bg-good text-white font-medium cursor-pointer rounded-full
+                  xs:text-4xl
+                  px-12 text:2xl
                 "
                 onClick={priceManager.insertLastHandler}
               >add price</button>
@@ -194,15 +207,17 @@ export default function TransactionForm() {
                 insertLeftHandler={categoryManager.insertLeftHandler(i)}
                 insertRightHandler={categoryManager.insertRightHandler(i)}
                 editHandler={()=>setEdittingCategory(i)}
-                insertable={prices.length < MAX_TAGS}
+                insertable={categories.length < MAX_TAGS && deletable}
+                deletable={deletable}
               />
             ))}
             {editMode && categories.length == 0 &&
               <button
                 className="
                   flex items-center justify-center
-                  bg-good text-background font-medium cursor-pointer rounded-full
-                  px-12 text-4xl
+                  bg-good text-white font-medium cursor-pointer rounded-full
+                  xs:text-4xl
+                  px-12 text-2xl
                 "
                 onClick={categoryManager.insertLastHandler}
               >add category</button>
@@ -211,10 +226,15 @@ export default function TransactionForm() {
         )}
         {page == 2 && (
           <div className="flex flex-col items-center justify-center h-full">
-            <div className="flex my-4 border-y-2 border-dashed px-12 py-4">
+            <div className="
+              flex my-4 py-4
+              border-y-2 border-dashed
+              xs:px-12
+              px-6
+            ">
               <div className="
                 mx-4 self-center
-                select-none font-medium
+                font-medium
                 text-lg
               ">Amount:</div>
               <div className="
@@ -224,12 +244,17 @@ export default function TransactionForm() {
               ">{record.amount}</div>
             </div>
             <div
-              className="self-center my-4 border-1 border-foreground w-fit rounded-full px-4"
+              className="
+                self-center my-4 w-fit break-all text-center 
+                border-1 border-foreground rounded-full px-4
+                sm:text-base
+                text-xs
+              "
               style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#171717", "#ffffff") }}
             >
               {record.category}
             </div>
-            <div className="mt-4 font-semibold select-none">Note:</div>
+            <div className="mt-4 font-semibold">Note:</div>
             <textarea
               className="
                 mt-2 mb-4 p-2 min-w-0 resize-none
@@ -245,7 +270,7 @@ export default function TransactionForm() {
             <button
               className="
                 my-4
-                bg-foreground text-background font-medium border-1 rounded-full cursor-pointer disabled:cursor-default disabled:opacity-50 overflow-hidden select-none
+                bg-foreground text-background font-medium border-1 rounded-full cursor-pointer disabled:cursor-default disabled:opacity-50 overflow-hidden
                 px-10 py-1
               "
               onClick={submitHandler}

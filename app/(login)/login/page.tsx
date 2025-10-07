@@ -30,21 +30,40 @@ export default function Login() {
     });
   },[])
   return (
-    <div className="flex justify-center items-center h-dvh">
-      <div>
+    <div className="
+      flex justify-center items-center h-dvh
+      md:px-12
+      sm:px-6 sm:flex-row
+      flex-col
+    ">
+      <div className="flex-4 sm:flex-1 flex items-center justify-end flex-col">
         <a href={FRONTEND_URL}>
-          <div
-            className="flex items-center font-medium justify-center text-8xl select-none"
-          >
+          <div className="
+            flex items-center font-medium justify-center
+            lg:text-8xl
+            md:text-7xl
+            sm:text-6xl
+            xs:text-8xl
+            text-6xl
+          ">
             <div className="text-foreground3 transition-all ease-linear duration-1000" style={iconStyle}><BsCashCoin/></div>
             <div className="text-good transition-all ease-linear duration-1000" style={exprecStyle}>Exprec</div>
           </div>
         </a>
-        <div className="text-2xl font-black mx-auto w-fit mt-4">TRACK YOUR EXPENSES</div>
+        <div className="
+          font-black mx-auto w-fit mt-4
+          lg:text-2xl
+          md:text-lg
+          sm:text-sm
+          xs:text-2xl
+          text-sm
+        ">TRACK YOUR EXPENSES</div>
       </div>
-        <div className="ml-16">
+      <div className="flex-3 sm:flex-1 flex items-start justify-center mt-12 sm:mt-0">
+        <div className="h-fit w-fit">
           <GoogleLoginBtn/>
         </div>
+      </div>
     </div>
   )
 }

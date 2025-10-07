@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
 *:focus {
   outline: none;
 }
@@ -43,6 +47,7 @@ input[type=number] {
   --color-bad: var(--bad);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --breakpoint-xs: 30rem;
 }
 
 body {
