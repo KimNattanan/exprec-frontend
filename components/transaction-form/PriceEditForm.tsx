@@ -102,7 +102,7 @@ export default function PriceEditForm({
           </div>
           <button
             className="
-              bg-foreground text-background disabled:opacity-50 cursor-pointer font-medium rounded-full
+              bg-foreground text-background disabled:opacity-50 disabled:cursor-default cursor-pointer font-medium rounded-full
               px-12 py-1 my-2 text-xl
             "
             onClick={submit}
