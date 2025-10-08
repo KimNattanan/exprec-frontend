@@ -1,12 +1,17 @@
+export type User = {
+  email: string;
+  name: string;
+}
+
+export type Preference = {
+  theme: string;
+}
+
 export type Pagination = {
   currentPage: number;
   limit: number;
   totalPages: number;
   totalRecords: number;
-}
-
-export type Preference = {
-  theme: string;
 }
 
 export type Price = {
