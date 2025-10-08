@@ -1,12 +1,16 @@
 'use client'
 
-import { useRouter } from "next/navigation"
+import { getUserFromBackend } from "@/lib/api/user-api"
+import { writeLoginToken } from "@/lib/api/user-api-server"
 import { useEffect } from "react"
 
 export default function Page(){
-  const router = useRouter()
   useEffect(()=>{
-    router.push("/")
+    const doFetch = async()=>{
+      const email = await getUserFromBackend()
+      writeLoginToken(email)
+    }
+    doFetch()
   },[])
   return (
     <>redirecting...</>

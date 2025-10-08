@@ -113,8 +113,8 @@ export default function NavigateBar() {
 
   useEffect(()=>{
     const fetchUser = async()=>{
-      const userEmail = await getUser();
-      if(userEmail) setUserEmail(userEmail);
+      const user = await getUser();
+      if(user && user.email) setUserEmail(user.email);
       else setUserEmail('error!');
     }
     const fetchPreference = async()=>{
