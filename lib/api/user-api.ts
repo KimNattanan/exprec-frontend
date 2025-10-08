@@ -11,7 +11,7 @@ export async function getUserFromBackend(){
     const res = await fetch(`${BACKEND_URL}/api/v2/me`, {
       method: "GET",
       credentials: "include"
-    });
+    })
     if(!res.ok){
       return ''
     }
@@ -40,11 +40,19 @@ export async function getUser() {
 
 export async function logoutUser(router: AppRouterInstance){
   try{
-    const res = await fetch(`${FRONTEND_URL}/api/me/logout`, {
+    const frontendResp = await fetch(`${FRONTEND_URL}/api/me/logout`, {
       method: 'POST'
     });
-    if(!res.ok){
-      console.error(await res.json());
+    if(!frontendResp.ok){
+      console.error(await frontendResp.json());
+      return;
+    }
+    const backendResp = await fetch(`${BACKEND_URL}/api/v2/me/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+    if(!backendResp.ok){
+      console.error(await backendResp.json());
       return;
     }
     router.refresh();

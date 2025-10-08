@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { importJWK, jwtVerify, SignJWT } from "jose";
+import { importJWK, jwtVerify } from "jose";
 import { cookies as _cookies } from "next/headers";
 
 export async function middleware(req: NextRequest) {

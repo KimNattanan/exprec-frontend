@@ -16,6 +16,6 @@ export async function writeLoginToken(email: string) {
                                             .setExpirationTime('2352h')
                                             .sign(secretKey);
   const cookies = await _cookies();
-  cookies.set("login-token", token);
+  cookies.set("token", token);
   redirect("/")
 }
