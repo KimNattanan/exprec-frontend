@@ -5,5 +5,5 @@ export function GET(req: NextRequest) {
   if(!email){
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return NextResponse.json({email}, { status: 200 })
+  return NextResponse.json({ email }, { status: 200 })
 }
