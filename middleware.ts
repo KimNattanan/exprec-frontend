@@ -15,23 +15,9 @@ export async function middleware(req: NextRequest) {
       k: jwtSecret
     }
     const secretKey = await importJWK(secretJWK, 'HS256')
-    let loginToken = req.cookies.get('login-token')?.value;
+    const loginToken = req.cookies.get('login-token')?.value;
     if (!loginToken){
-      const res = await fetch(`${BACKEND_URL}/api/v2/me`, {
-        method: "GET",
-        credentials: "include"
-      });
-      if(!res.ok){
-        throw new Error(await res.text());
-      }
-      const { email }: User = await res.json();
-      const token = await new SignJWT({ email }).setProtectedHeader({ alg: 'HS256' })
-                                                .setIssuedAt()
-                                                .setExpirationTime('2352h')
-                                                .sign(secretKey);
-      const cookies = await _cookies();
-      cookies.set("login-token", token);
-      loginToken = token
+      throw new Error("Unauthorized")
     }
 
     const { payload } = await jwtVerify(loginToken, secretKey);
