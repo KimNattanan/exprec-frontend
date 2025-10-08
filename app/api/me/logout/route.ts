@@ -7,6 +7,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const cookieStore = await cookies();
-  cookieStore.delete("loginToken");
+  cookieStore.delete("login-token");
   return NextResponse.json(null, { status: 200 });
 }
