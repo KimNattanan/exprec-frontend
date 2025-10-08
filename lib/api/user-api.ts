@@ -1,27 +1,10 @@
 'use client'
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Preference, User } from "@/types/api";
+import { Preference } from "@/types/api";
 
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
-
-export async function getUserFromBackend(){
-  try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/me`, {
-      method: "GET",
-      credentials: "include"
-    });
-    if(!res.ok){
-      return ''
-    }
-    const { email }: User = await res.json()
-    return email
-  }catch(error){
-    console.error(error)
-    return ''
-  }
-}
 
 export async function getUser() {
   try{
