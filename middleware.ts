@@ -5,12 +5,6 @@ import { cookies as _cookies } from "next/headers";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'');
 
-interface UserInterface {
-  id: string,
-  email: string,
-  name: string,
-  prices: unknown[]
-}
 
 export async function middleware(req: NextRequest) {
   try {
@@ -21,14 +15,14 @@ export async function middleware(req: NextRequest) {
       k: jwtSecret
     }
     const secretKey = await importJWK(secretJWK, 'HS256')
-    let loginToken = req.cookies.get('loginToken')?.value;
+    let loginToken = req.cookies.get('login-token')?.value;
     if (!loginToken){
       const res = await fetch(`${BACKEND_URL}/api/v2/me`, {
         method: "GET",
         credentials: "include"
       });
       if(!res.ok){
-        throw new Error(await res.json());
+        throw new Error(await res.text());
       }
       const { email }: User = await res.json();
       const token = await new SignJWT({ email }).setProtectedHeader({ alg: 'HS256' })
@@ -36,7 +30,7 @@ export async function middleware(req: NextRequest) {
                                                 .setExpirationTime('2352h')
                                                 .sign(secretKey);
       const cookies = await _cookies();
-      cookies.set("loginToken", token);
+      cookies.set("login-token", token);
       loginToken = token
     }
 
