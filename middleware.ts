@@ -12,7 +12,8 @@ export async function middleware(req: NextRequest) {
 
     const secret = new TextEncoder().encode(jwtSecret);
     const { payload } = await jwtVerify(loginToken.value, secret);
-    const user = payload.user as User
+    console.log("PAYLOAD:", payload);
+    const user = payload.user as User;
 
     const headers = new Headers(req.headers);
     headers.set('x-user', JSON.stringify(user));
