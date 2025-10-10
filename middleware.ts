@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { importJWK, jwtVerify, SignJWT } from "jose";
-import { cookies as _cookies } from "next/headers";
+import { jwtVerify } from "jose";
 import { User } from "./types/api";
 
 export async function middleware(req: NextRequest) {
@@ -26,5 +25,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!login|api/auth|_next|favicon.ico).*)'], 
+  matcher: ['/((?!login|_next|favicon.ico).*)'], 
 }
