@@ -32,9 +32,16 @@ export type Category = {
 
 export type Record = {
   id: string;
-  created_at: Date;
+  created_at: string;
   amount: number;
   category: string;
   category_bg_color: string;
   note: string;
+}
+
+export type DashboardData = {
+  total_amount: number;
+  amount_by_category: Map<string,number>;
+  category_color: Map<string,string>;
+  records: Record[];
 }

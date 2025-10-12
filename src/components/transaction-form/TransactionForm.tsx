@@ -248,11 +248,11 @@ export default function TransactionForm() {
             <div
               className="
                 self-center my-4 w-fit break-all text-center 
-                border-1 border-foreground rounded-full px-4
+                border-1 border-foreground rounded-full
                 sm:text-base
-                text-xs
+                text-xs px-4
               "
-              style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#171717", "#ffffff") }}
+              style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#524439", "#ffffff") }}
             >
               {record.category}
             </div>

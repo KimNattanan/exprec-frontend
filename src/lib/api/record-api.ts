@@ -1,6 +1,6 @@
 'use client'
 
-import { Record } from "@/types/api";
+import { DashboardData, Record } from "@/types/api";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
@@ -57,5 +57,29 @@ export async function deleteRecord(id: string) {
   } catch(error) {
     console.error(error);
     return false;
+  }
+}
+
+export async function fetchDashboardData(timeStart: string, timeEnd: string) {
+  try{
+    const res = await fetch(`${BACKEND_URL}/api/v2/records/dashboard-data?timeStart=${timeStart}&timeEnd=${timeEnd}`,{
+      method: "GET",
+      credentials: "include",
+    });
+    if(!res.ok){
+      console.error(await res.json());
+      return null;
+    }
+    const data = await res.json();
+    const dashboardData: DashboardData = {
+      total_amount: data.total_amount,
+      amount_by_category: new Map<string,number>(Object.entries(data.amount_by_category)),
+      category_color: new Map<string,string>(Object.entries(data.category_color)),
+      records: data.records as Record[],
+    }
+    return dashboardData;
+  } catch(error) {
+    console.error(error);
+    return null;
   }
 }

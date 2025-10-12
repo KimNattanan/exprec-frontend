@@ -5,12 +5,9 @@ import { Record } from "@/types/api"
 import { MouseEventHandler, useCallback, useEffect, useState } from "react"
 import { useHistoryContext } from "./HistoryContext"
 import { IoIosClose } from "react-icons/io"
-import { getContrastYIQ } from "@/lib/utils"
-
-const monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
+import { getContrastYIQ, monthNames } from "@/lib/utils"
+import HistoryPaginator from "./HistoryPaginator"
+import Link from "next/link"
 
 function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: MouseEventHandler }) {
   const { editMode, deletable } = useHistoryContext()
@@ -78,13 +75,13 @@ function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: M
         </div>
         <div
           className="
-            w-fit break-all text-center
+            self-center h-fit w-fit break-all text-center
             border-1 border-foreground rounded-full
             lg:text-base lg:px-8
             sm:ml-8 sm:text-sm
             text-xs px-4 ml-4 mb-8
           "
-          style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#171717", "#ffffff") }}
+          style={{ backgroundColor: record.category_bg_color, color: getContrastYIQ(record.category_bg_color, "#524439", "#ffffff") }}
         >
           {record.category}
         </div>
@@ -93,6 +90,8 @@ function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: M
         </div>
         <div className="
           break-all self-center
+          lg:text-2xl
+          md:text-xl
           sm:ml-8
           ml-4 text-xs mb-4
         ">
@@ -135,9 +134,11 @@ export default function RecordContainer() {
       <div className="sm:ml-8 ml-4 sm:text-base text-xs">
         Total records: {pagination.totalRecords}
       </div>
+      <HistoryPaginator/>
       {records.map((v,i)=>(
         <RecordBox key={i} record={v} deleteHandler={recordDeleteHandler(i)}/>
       ))}
+      <HistoryPaginator/>
     </>
   )
 }

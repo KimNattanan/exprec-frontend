@@ -41,7 +41,7 @@ export function HistoryContextProvider({ children }:{ children: ReactNode }) {
 export function useHistoryContext() {
   const context = useContext(HistoryContext)
   if(!context){
-    throw new Error("useHistoryContext must be used inside HistoryContextProvider.")
+    throw new Error("useHistoryContext must be used inside HistoryContextProvider")
   }
   return context
 }

@@ -3,6 +3,9 @@ import { jwtVerify } from "jose";
 import { User } from "./types/api";
 
 export async function middleware(req: NextRequest) {
+  // if(2==2){
+  //   return NextResponse.next();
+  // }
   try {
     const loginToken = req.cookies.get('loginToken');
     if (!loginToken) throw new Error("loginToken not found");

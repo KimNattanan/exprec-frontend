@@ -8,3 +8,8 @@ export function getContrastYIQ(hexcolor0: string, hexcolor1: string, hexcolor2: 
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
   return yiq >= 128 ? hexcolor1 : hexcolor2;
 }
+
+export const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];

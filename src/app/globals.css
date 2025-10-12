@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+
+:root {
+  --background: #ffffff;
+  --background2: #fff3d1;
+  --foreground: #524439;
+  --foreground2: #000000;
+  --foreground3: #feba00;
+  --good: #14d084;
+  --bad: #ce2512;
+}
+
+[data-theme="dark"] {
+  --background: #171717;
+  --background2: #3e3a48;
+  --foreground: #ffffff;
+  --foreground2: #a5988b;
+  --good: #00ffd574;
+  --bad: #e7402d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background2: var(--background2);
+  --color-foreground: var(--foreground);
+  --color-foreground2: var(--foreground2);
+  --color-foreground3: var(--foreground3);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --breakpoint-xs: 30rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-fredoka), Arial, Helvetica, sans-serif;
+}
+
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+*:focus {
+  outline: none;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Apply to all scrollable elements */
+* {
+  scrollbar-width: thin; /* Firefox: makes scrollbar thin */
+  scrollbar-color: var(--foreground) transparent; /* Firefox: thumb and track colors */
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 0.2rem;      /* vertical scrollbar width */
+  height: 0.2rem;     /* horizontal scrollbar height */
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent; /* Track is transparent */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--foreground); /* Thumb color */
+  border-radius: 9999px;               /* Fully rounded */
+}
