@@ -52,6 +52,7 @@ function SearchBox() {
         <div className="ml-4 mb-4">
           <input
             name="date-from"
+            placeholder="select date"
             type="date"
             value={dateFrom}
             onChange={(e: ChangeEvent<HTMLInputElement>)=>setDateFrom(e.target.value)}
@@ -64,6 +65,7 @@ function SearchBox() {
         <div className="ml-4 mb-4">
           <input
             name="date-to"
+            placeholder="select date"
             type="date"
             value={dateTo}
             onChange={(e: ChangeEvent<HTMLInputElement>)=>setDateTo(e.target.value)}
