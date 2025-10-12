@@ -2,6 +2,7 @@
 
 import { DashboardData } from "@/types/api";
 import { createContext, useContext, useState, ReactNode } from "react";
+import { TestcaseDashboardData } from "./testcases";
 
 type CategoryStatus = Map<string,boolean>
 
@@ -24,9 +25,25 @@ export function DashboardContextProvider({ children }:{ children: ReactNode }) {
   })
   const [categoryStatus, setCategoryStatus] = useState<CategoryStatus>(new Map<string,boolean>())
 
+  const numberTests = 3;
+  const [currentTest, setCurrentTest] = useState(1);
+  const mockSetDashboardData = (_: DashboardData) => {
+    const { dashboardData, categories } = currentTest==1 ? TestcaseDashboardData.getTest1() :
+                                          currentTest==2 ? TestcaseDashboardData.getTest2() :
+                                          TestcaseDashboardData.getTest3();
+    setCurrentTest(1 + currentTest%numberTests);
+    
+    const mp = new Map<string,boolean>()
+    categories.forEach((v)=>{
+      mp.set(v, true);
+    });
+    setDashboardData(dashboardData);
+    setCategoryStatus(mp);
+  }
+
   return (
     <DashboardContext.Provider value={{
-      dashboardData, setDashboardData,
+      dashboardData, setDashboardData: mockSetDashboardData,
       categoryStatus, setCategoryStatus,
     }}>
       { children }

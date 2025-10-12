@@ -2,6 +2,7 @@ import { DashboardData, Record } from "@/types/api";
 
 export class TestcaseDashboardData {
   static getTest1()  {
+    console.log("testcase-1");
     // ===== Realistic Test Case: Personal Expense Tracker ===== //
 
     const categories = [
@@ -118,6 +119,7 @@ export class TestcaseDashboardData {
   }
 
   static getTest2() {
+    console.log("testcase-2");
     // ===== Realistic Test Case: Long-Term Personal Expense Dataset ===== //
 
     const categories = [
@@ -224,6 +226,7 @@ export class TestcaseDashboardData {
   }
 
   static getTest3() {
+    console.log("testcase-3");
     const categories = ["Food", "Transportation", "Game"];
     const category_bg_color = [
       "#FF6B6B", // Food - coral red
