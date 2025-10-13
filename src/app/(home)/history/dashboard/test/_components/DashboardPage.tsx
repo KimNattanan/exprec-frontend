@@ -199,7 +199,12 @@ function ChartContainer() {
       <div className="flex flex-col border-2 p-4 mx-auto rounded-xl my-4 w-full">
         <MonthlyLineGraph/>
       </div>
-      <div className="flex flex-col border-2 p-4 mx-auto rounded-xl my-4 w-1/3">
+      <div className="
+        flex flex-col border-2 p-4 mx-auto rounded-xl my-4
+        md:w-4/7
+        sm:w-2/3
+        w-full h-96
+      ">
         <CategoryPieChart/>
       </div>
     </>
