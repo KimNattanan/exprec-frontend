@@ -7,7 +7,6 @@ import { useHistoryContext } from "./HistoryContext"
 import { IoIosClose } from "react-icons/io"
 import { getContrastYIQ, monthNames } from "@/lib/utils"
 import HistoryPaginator from "./HistoryPaginator"
-import Link from "next/link"
 
 function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: MouseEventHandler }) {
   const { editMode, deletable } = useHistoryContext()

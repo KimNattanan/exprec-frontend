@@ -40,8 +40,8 @@ export async function getUser() {
 
 export async function logoutUser(router: AppRouterInstance){
   try{
-    const res = await fetch(`${FRONTEND_URL}/api/me/logout`, {
-      method: 'POST'
+    const res = await fetch(`${BACKEND_URL}/api/v2/me/logout`, {
+      method: 'GET'
     });
     if(!res.ok){
       console.error(await res.json());
