@@ -243,7 +243,7 @@ export default function TransactionForm() {
                 mx-4 self-center
                 text-shadow-sm text-shadow-foreground/20 font-medium
                 text-2xl
-              ">{record.amount}</div>
+              ">{record.amount.toFixed(2)}</div>
             </div>
             <div
               className="
