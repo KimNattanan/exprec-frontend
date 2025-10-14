@@ -20,9 +20,11 @@ function SearchBox() {
       let timeStart = "";
       let timeEnd = "";
       if(dateFrom){
+        dateFrom.setHours(0,0,0,0);
         timeStart = dateFrom.toISOString();
       }
       if(dateTo){
+        dateTo.setHours(23,59,59,999);
         timeEnd = dateTo.toISOString();
       }
 
@@ -196,17 +198,8 @@ function DataPanel() {
 function ChartContainer() {
   return (
     <>
-      <div className="flex flex-col border-2 p-4 mx-auto rounded-xl my-4 w-full">
-        <MonthlyLineGraph/>
-      </div>
-      <div className="
-        flex flex-col border-2 p-4 mx-auto rounded-xl my-4
-        md:w-4/7
-        sm:w-2/3
-        w-full h-96
-      ">
-        <CategoryPieChart/>
-      </div>
+      <MonthlyLineGraph/>
+      <CategoryPieChart/>
     </>
   );
 }

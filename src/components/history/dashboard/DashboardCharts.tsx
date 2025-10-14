@@ -113,12 +113,13 @@ export function MonthlyLineGraph() {
     },
   };
 
-  if (!chartData) return <div className="w-fit mx-auto">No data available.</div>;
-  return (
-    <div
-      style={{ height: Math.max(300, monthCount * 20) }}
-    >
-      <Line options={options} data={chartData} />
+  return chartData && (
+    <div className="flex flex-col border-2 p-4 mx-auto rounded-xl my-4 w-full">  
+      <div
+        style={{ height: Math.max(300, monthCount * 20) }}
+      >
+        <Line options={options} data={chartData} />
+      </div>
     </div>
   );
 }
@@ -213,8 +214,14 @@ export function CategoryPieChart() {
     },
   };
 
-  if (!chartData) return <div className="w-fit mx-auto">No data available.</div>;
-  return (
-    <Pie options={options} data={chartData} />
+  return chartData && (
+    <div className="
+      flex flex-col border-2 p-4 mx-auto rounded-xl my-4
+      md:w-4/7
+      sm:w-2/3
+      w-full h-96
+    ">
+      <Pie options={options} data={chartData} />
+    </div>
   );
 }
