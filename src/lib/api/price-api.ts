@@ -1,18 +1,15 @@
 'use client'
 
+import { fetchApi } from "@/lib/api/api";
 import { Price } from "@/types/api";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchPrices() {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/prices`,{
-      method: "GET",
-      credentials: "include",
-    });
-    console.log("wowza");
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/prices`);
     if(!res.ok){
-      console.error("test1", await res.json());
+      console.error(await res.json());
       return null;
     }
     const data = await res.json();
@@ -25,18 +22,14 @@ export async function fetchPrices() {
 
 export async function createPrice(prev_id: string|undefined, next_id: string|undefined) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/prices`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/prices`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({
         prev_id,
         next_id,
         amount: 100,
         bg_color: "#ffffff"
       }),
-      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());
@@ -52,9 +45,8 @@ export async function createPrice(prev_id: string|undefined, next_id: string|und
 
 export async function deletePrice(id: string) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/prices/${id}`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/prices/${id}`, {
       method: 'DELETE',
-      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());
@@ -69,13 +61,9 @@ export async function deletePrice(id: string) {
 
 export async function patchPrice(id: string, price: Price) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/prices/${id}`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/prices/${id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(price),
-      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());

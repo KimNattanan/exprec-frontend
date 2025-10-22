@@ -1,5 +1,6 @@
 'use client'
 
+import { fetchApi } from "@/lib/api/api";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Preference, User } from "@/types/api";
 
@@ -8,10 +9,7 @@ const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'
 
 export async function getUserFromBackend(){
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/me`, {
-      method: "GET",
-      credentials: "include"
-    });
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/me`);
     if(!res.ok){
       return ''
     }
@@ -40,14 +38,15 @@ export async function getUser() {
 
 export async function logoutUser(router: AppRouterInstance){
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/me/logout`, {
-      method: 'GET',
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/auth/logout`, {
+      method: 'POST',
       credentials: 'include'
     });
     if(!res.ok){
       console.error(await res.json());
       return;
     }
+    sessionStorage.removeItem('access_token');
     router.refresh();
   } catch(error) {
     console.error(error);
@@ -56,9 +55,8 @@ export async function logoutUser(router: AppRouterInstance){
 
 export async function deleteUser(router: AppRouterInstance) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/users`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/users`, {
       method: 'DELETE',
-      credentials: 'include'
     });
     if(!res.ok){
       console.error(await res.json());
@@ -74,10 +72,7 @@ export async function deleteUser(router: AppRouterInstance) {
 
 export async function getUserPreference() {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/preferences`,{
-      method: "GET",
-      credentials: "include"
-    });
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/preferences`);
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -91,13 +86,9 @@ export async function getUserPreference() {
 }
 export async function setUserPreference(preference: Preference) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/preferences`,{
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/preferences`,{
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(preference),
-      credentials: "include"
     });
     if(!res.ok){
       console.error(await res.json());

@@ -11,8 +11,10 @@ import { CiEdit } from "react-icons/ci";
 import { MdDone } from "react-icons/md";
 import PriceEditForm from "./PriceEditForm";
 import CategoryEditForm from "./CategoryEditForm";
-import { getContrastYIQ } from "@/lib/utils";
+import { formatDateTime, getContrastYIQ } from "@/lib/utils";
 import TagBox from "./TagBox";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const MAX_TAGS = 30;
 const NOTE_MAXLENGTH = 50;
@@ -20,8 +22,9 @@ const NOTE_MAXLENGTH = 50;
 export default function TransactionForm() { 
   
   // price, category
-  const [prices, setPrices] = useState<Array<Price>>([])
-  const [categories, setCategories] = useState<Array<Category>>([])
+  const [createdAt, setCreatedAt] = useState<Date>(new Date());
+  const [prices, setPrices] = useState<Array<Price>>([]);
+  const [categories, setCategories] = useState<Array<Category>>([]);
   const [priceFetched, setPriceFetched] = useState(false);
   const [categoryFetched, setCategoryFetched] = useState(false);
   const [deletable, setDeletable] = useState(true);
@@ -47,7 +50,12 @@ export default function TransactionForm() {
     setPage(page+1);
   }
   const categorySelectHandler = (i: number) => () => {
-    setRecord({ ...record, category: categories[i].title, category_bg_color: categories[i].bg_color } as Record);
+    setRecord({
+      ...record,
+      category: categories[i].title,
+      category_bg_color: categories[i].bg_color
+    } as Record);
+    setCreatedAt(new Date());
     setPage(page+1);
   }
   
@@ -74,7 +82,7 @@ export default function TransactionForm() {
 
   const submitHandler = async ()=>{
     setSubmitting(true);
-    const { error } = await createRecord({ ...record, note: note } as Record);
+    const { error } = await createRecord({ ...record, note: note, created_at: createdAt.toISOString() } as Record);
     setSubmitting(false);
     if(error){
       setSubmitMessage(error)
@@ -228,6 +236,16 @@ export default function TransactionForm() {
         )}
         {page == 2 && (
           <div className="flex flex-col items-center justify-center h-full">
+            <div className="
+              flex text-foreground3 font-semibold
+              xs:text-xl
+              text-base mb-2
+            ">
+              <div className="mr-2">{formatDateTime(createdAt)[0]}</div>
+              <div className="mx-2">{formatDateTime(createdAt)[1]}</div>
+              <div className="mx-2">{formatDateTime(createdAt)[2]}</div>
+              <div className="ml-2">{formatDateTime(createdAt)[3]}</div>
+            </div>
             <div className="
               flex my-4 py-4
               border-y-2 border-dashed

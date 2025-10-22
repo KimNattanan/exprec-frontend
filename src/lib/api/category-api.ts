@@ -1,15 +1,13 @@
 'use client'
 
+import { fetchApi } from "@/lib/api/api";
 import { Category } from "@/types/api";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchCategories() {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/categories`,{
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/categories`);
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -24,18 +22,14 @@ export async function fetchCategories() {
 
 export async function createCategory(prev_id: string|undefined, next_id: string|undefined) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/categories`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/categories`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({
         prev_id,
         next_id,
         title: "Untitled",
         bg_color: "#ffffff"
       }),
-      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());
@@ -51,9 +45,8 @@ export async function createCategory(prev_id: string|undefined, next_id: string|
 
 export async function deleteCategory(id: string) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/categories/${id}`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/categories/${id}`, {
       method: 'DELETE',
-      credentials: "include",
     })
     if(!res.ok){
       console.error(await res.json());
@@ -68,13 +61,9 @@ export async function deleteCategory(id: string) {
 
 export async function patchCategory(id: string, category: Category) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/categories/${id}`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/categories/${id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(category),
-      credentials: "include",
     });
     if(!res.ok){
       console.error(await res.json());

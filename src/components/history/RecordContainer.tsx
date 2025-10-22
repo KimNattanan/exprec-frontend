@@ -5,19 +5,13 @@ import { Record } from "@/types/api"
 import { MouseEventHandler, useCallback, useEffect, useState } from "react"
 import { useHistoryContext } from "./HistoryContext"
 import { IoIosClose } from "react-icons/io"
-import { getContrastYIQ, monthNames } from "@/lib/utils"
+import { formatDateTime, getContrastYIQ, monthNames } from "@/lib/utils"
 import HistoryPaginator from "./HistoryPaginator"
 
 function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: MouseEventHandler }) {
   const { editMode, deletable } = useHistoryContext()
 
-  const date = new Date(record.created_at)
-  const formatTime = ()=>{
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
-  }
+  const created_at = formatDateTime(new Date(record.created_at))
   return (
     <div className="
       relative overflow-hidden  
@@ -44,10 +38,10 @@ function RecordBox({ record, deleteHandler }: { record: Record, deleteHandler: M
         sm:text-sm
         text-xs mb-6
       ">
-        <div className="mr-2">{date.getDate()}</div>
-        <div className="mx-2">{monthNames[date.getMonth()]}</div>
-        <div className="mx-2">{date.getFullYear()}</div>
-        <div className="ml-2">{formatTime()}</div>
+        <div className="mr-2">{created_at[0]}</div>
+        <div className="mx-2">{created_at[1]}</div>
+        <div className="mx-2">{created_at[2]}</div>
+        <div className="ml-2">{created_at[3]}</div>
       </div>
       <div className="
         grid grid-cols-[max-content_1fr]

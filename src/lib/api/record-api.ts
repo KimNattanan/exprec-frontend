@@ -1,15 +1,13 @@
 'use client'
 
+import { fetchApi } from "@/lib/api/api";
 import { DashboardData, Record } from "@/types/api";
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
 
 export async function fetchRecords(page: number) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/records?page=${page}`,{
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/records?page=${page}`);
     if(!res.ok){
       console.error(await res.json());
       return null;
@@ -24,13 +22,9 @@ export async function fetchRecords(page: number) {
 
 export async function createRecord(record: Record) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/records`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/records`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(record),
-      credentials: 'include',
     });
     const data = await res.json();
     if(!res.ok){
@@ -45,9 +39,8 @@ export async function createRecord(record: Record) {
 
 export async function deleteRecord(id: string) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/records/${id}`, {
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/records/${id}`, {
       method: 'DELETE',
-      credentials: "include",
     })
     if(!res.ok){
       console.error(await res.json());
@@ -62,10 +55,7 @@ export async function deleteRecord(id: string) {
 
 export async function fetchDashboardData(timeStart: string, timeEnd: string) {
   try{
-    const res = await fetch(`${BACKEND_URL}/api/v2/records/dashboard-data?timeStart=${timeStart}&timeEnd=${timeEnd}`,{
-      method: "GET",
-      credentials: "include",
-    });
+    const res = await fetchApi(`${BACKEND_URL}/api/v2/records/dashboard-data?timeStart=${timeStart}&timeEnd=${timeEnd}`);
     if(!res.ok){
       console.error(await res.json());
       return null;
