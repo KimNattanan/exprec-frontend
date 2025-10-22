@@ -48,7 +48,7 @@ function SearchBox() {
   return (
     <div className="flex flex-col w-fit border-2 p-4 mx-auto rounded-xl my-4 xs:text-base text-sm">
       <div className="grid grid-cols-[max-content_1fr] w-fit xs:mx-10 mx-4">
-        <div className="text-end mb-4 font-semibold">
+        <div className="text-end mb-4 font-semibold content-center">
           From:
         </div>
         <div className="ml-4 mb-4">
@@ -58,9 +58,10 @@ function SearchBox() {
             placeholderText="Select date"
             maxDate={dateTo || undefined}
             className="p-2 border rounded-md bg-background text-foreground"
+            isClearable
           />
         </div>
-        <div className="text-end mb-4 font-semibold">
+        <div className="text-end mb-4 font-semibold content-center">
           To:
         </div>
         <div className="ml-4 mb-4">
@@ -70,6 +71,7 @@ function SearchBox() {
             placeholderText="Select date"
             minDate={dateFrom || undefined}
             className="p-2 border rounded-md bg-background text-foreground"
+            isClearable
           />
         </div>
       </div>

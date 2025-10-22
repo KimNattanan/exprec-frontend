@@ -96,12 +96,25 @@ export function MonthlyLineGraph() {
     setChartData(data);
   }, [dashboardData, categoryStatus]);
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          font: function(context) {
+            let size: number;
+            if(context.chart.width < 480) {
+              size = 10;
+            }else{
+              size = 12;
+            }
+            return {
+              size: size,
+            };
+          },
+        },
       },
       title: {
         display: true,
@@ -175,9 +188,23 @@ export function CategoryPieChart() {
 
   const options: ChartOptions<'pie'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
+        labels: {
+          font: function(context) {
+            let size: number;
+            if(context.chart.width < 480) {
+              size = 10;
+            }else{
+              size = 12;
+            }
+            return {
+              size: size,
+            };
+          },
+        },
       },
       title: {
         display: true,
@@ -191,7 +218,7 @@ export function CategoryPieChart() {
         },
         font: {
           weight: 'bold',
-          size: 14,
+          size: 10,
         },
         // The formatter function is key for calculating the percentage
         formatter: (value: number, context: DataLabelsContext) => {
@@ -209,19 +236,20 @@ export function CategoryPieChart() {
         },
         // You can also add `anchor` and `align` for label positioning
         anchor: 'center',
-        align: 'center',
+        align: 'end',
       },
     },
   };
 
   return chartData && (
     <div className="
-      flex flex-col border-2 p-4 mx-auto rounded-xl my-4
+      flex justify-center items-center
+      border-2 p-4 mx-auto rounded-xl my-4
       md:w-4/7
       sm:w-2/3
       w-full h-96
     ">
-      <Pie options={options} data={chartData} />
+      <Pie options={options} data={chartData}/>
     </div>
   );
 }

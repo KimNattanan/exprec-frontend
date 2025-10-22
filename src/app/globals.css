@@ -78,3 +78,20 @@ input[type=number] {
   background-color: var(--foreground); /* Thumb color */
   border-radius: 9999px;               /* Fully rounded */
 }
+
+.react-datepicker__close-icon {
+  border: none !important;
+  background-color: transparent !important;
+  font-size: 1rem !important;
+  top: 2px !important;
+  right: 2px !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+}
+.react-datepicker__close-icon::after {
+  content: "✕" !important;
+  color: var(--background) !important;
+  background-color: var(--bad) !important;
+  padding: 0 !important;
+}
