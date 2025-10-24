@@ -24,9 +24,6 @@ export function DashboardContextProvider({ children }:{ children: ReactNode }) {
   })
   const [categoryStatus, setCategoryStatus] = useState<CategoryStatus>(new Map<string,boolean>())
 
-  const numberTests = 3;
-  const [currentTest, setCurrentTest] = useState(1);
-
   return (
     <DashboardContext.Provider value={{
       dashboardData, setDashboardData,
