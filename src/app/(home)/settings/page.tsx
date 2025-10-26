@@ -10,10 +10,17 @@ export default function Settings() {
 
   const [showDeleteUserConfirm, setShowDeleteUserConfirm] = useState(false)
   const [deletingUser, setDeletingUser] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
 
-  const userDeleteHandler = ()=>{
+  const userDeleteHandler = async()=>{
     setDeletingUser(true);
-    deleteUser(router);
+    await deleteUser(router);
+    setDeletingUser(false);
+  }
+  const logoutHandler = async()=>{
+    setLoggingOut(true);
+    await logoutUser(router);
+    setLoggingOut(false);
   }
 
   return (
@@ -53,10 +60,11 @@ export default function Settings() {
           <button
             className="
               w-fit
-              bg-foreground3 text-background rounded-full cursor-pointer font-medium
+              bg-foreground3 text-background rounded-full cursor-pointer font-medium disabled:opacity-50 disabled:cursor-default
               px-12 py-1
             "
-            onClick={()=>logoutUser(router)}
+            onClick={logoutHandler}
+            disabled={loggingOut}
           >Logout</button>
         </div>
         <div className="my-4">

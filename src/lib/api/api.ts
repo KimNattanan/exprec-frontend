@@ -33,7 +33,10 @@ export async function fetchApi(
 
   if (res.status === 401) {
     const refresh = await fetch(`${BACKEND_URL}/api/v2/auth/refresh`, { method: 'POST', credentials: 'include' });
-    if (!refresh.ok) throw new Error('Session expired');
+    if (!refresh.ok){
+      
+      throw new Error('Session expired');
+    }
 
     const data = await refresh.json();
     sessionStorage.setItem('access_token', data.access_token);
