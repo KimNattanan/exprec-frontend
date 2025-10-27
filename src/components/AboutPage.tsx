@@ -30,7 +30,7 @@ export default function AboutPage() {
 
   return (
     <div id="about" className="
-      sm:h-dvh font-medium relative
+      sm:h-vh font-medium relative
       lg:text-xl
       md:text-base
       xs:text-sm
@@ -48,7 +48,7 @@ export default function AboutPage() {
         sm:flex relative
       ">
         <div className="
-          flex-3 min-w-0 h-[calc(100dvh-140px)] flex flex-col relative px-4
+          flex-3 min-w-0 h-[calc(100vh-140px)] flex flex-col relative px-4
         ">
           <div className="
             w-full 
@@ -134,7 +134,7 @@ export default function AboutPage() {
           </div>
         </div>
         <div className="
-          flex-2 h-[calc(100dvh-140px)] content-end relative flex
+          flex-2 h-[calc(100vh-140px)] content-end relative flex
           md:p-10 md:pb-10
           sm:flex-col-reverse sm:border-b-0 sm:mb-0 sm:pb-4
           flex-col p-4 mb-10 pb-10 border-b-1
