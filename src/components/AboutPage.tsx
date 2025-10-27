@@ -42,7 +42,7 @@ export default function AboutPage() {
         sm:text-5xl sm:pt-0
         text-4xl h-[100px] pt-4 border-t-1
       ">
-        What's Exprec?
+        {`What's Exprec?`}
       </div>
       <div className="
         sm:flex relative

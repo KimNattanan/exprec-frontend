@@ -2,16 +2,12 @@
 
 import AboutPage from "@/components/AboutPage";
 import GoogleLoginBtn from "@/components/GoogleLoginBtn";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsCashCoin } from "react-icons/bs";
 
 const FRONTEND_URL = (process.env.NEXT_PUBLIC_FRONTEND_URL || '').replace(/\/+$/,'')
 
 export default function Login() {
-
-  const router = useRouter();
 
   const [iconStyle, setIconStyle] = useState({
     translate: "0 50px",
@@ -72,7 +68,7 @@ export default function Login() {
               className="rounded-full font-semibold text-blue-500 underline text-xl mt-4 cursor-pointer"
               onClick={()=>{window.location.hash = ''; window.location.hash = 'about'; }}
             >
-              ↓ What's Exprec? ↓
+              {`↓ What's Exprec? ↓`}
             </button>
           </div>
         </div>
