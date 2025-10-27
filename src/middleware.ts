@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { User } from "./types/api";
 
 export async function middleware(req: NextRequest) {
-  // if(2==2){
-  //   return NextResponse.next();
-  // }
+  if(2==2){
+    return NextResponse.next();
+  }
   try {
     const token = req.cookies.get('token');
     if (!token) throw new Error("token not found");
@@ -21,14 +20,20 @@ export async function middleware(req: NextRequest) {
     const headers = new Headers(req.headers);
     headers.set('x-user-id', userID);
     headers.set('x-user-email', userEmail);
+
     
+    if(req.nextUrl.pathname == '/'){
+      return NextResponse.redirect(new URL('/home', req.url));
+    }
     return NextResponse.next({ request: { headers } });
   } catch(error) {
-    console.log(error);
-    return NextResponse.redirect(new URL('/login', req.url));
+    if(req.nextUrl.pathname == '/'){
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL('/', req.url));
   }
 }
 
 export const config = {
-  matcher: ['/((?!login|_next|favicon.ico).*)'], 
+  matcher: ['/((?!_next/|favicon.ico).*)'], 
 }
