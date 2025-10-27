@@ -30,7 +30,7 @@ export default function AboutPage() {
 
   return (
     <div id="about" className="
-      sm:h-vh font-medium relative
+      sm:h-screen font-medium relative
       lg:text-xl
       md:text-base
       xs:text-sm

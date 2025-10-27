@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <>
       <div className="
-        flex justify-center items-center h-dvh
+        flex justify-center items-center h-screen
         md:px-12
         sm:px-6 sm:flex-row
         flex-col
