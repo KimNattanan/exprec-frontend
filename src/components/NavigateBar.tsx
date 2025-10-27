@@ -133,7 +133,7 @@ export default function NavigateBar() {
       <div className="sticky h-16"/>
       <div className="fixed bg-background transition-colors duration-500 flex items-center top-0 w-full h-16 z-50">
         <div className="flex h-full items-center grow">
-          <Link href={'/'} className="h-full px-8">
+          <Link href={'/home'} className="h-full px-8">
             <div className="h-full flex items-center justify-center text-xl">
               <BsCashCoin/> Exprec
             </div>
@@ -146,7 +146,7 @@ export default function NavigateBar() {
         </div>
         <div className="hidden md:flex h-full items-center justify-end">
           <div className="h-full mx-8 aspect-square flex items-center justify-center text-xl">
-            <Link href={'/'}>
+            <Link href={'/home'}>
               <div className="hover:border-b-2">Home</div>
             </Link>
           </div>
