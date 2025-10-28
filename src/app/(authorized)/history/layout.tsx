@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <>
       <div className="
-        text-foreground w-full min-h-[calc(100dvh-4rem)]
+        text-foreground w-full min-h-[calc(100vh-4rem)]
         xs:px-10
         px-4 pb-4 pt-10">
         {children}

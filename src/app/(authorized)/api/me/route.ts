@@ -1,4 +1,3 @@
-import { User } from "@/types/api";
 import { NextRequest, NextResponse } from "next/server";
 
 export function GET(req: NextRequest) {

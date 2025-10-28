@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
-  console.log("RUNNUNN");
   try {
     const token = req.cookies.get('token');
     if (!token) throw new Error("token not found");
@@ -19,9 +18,6 @@ export async function middleware(req: NextRequest) {
     headers.set('x-user-id', userID);
     headers.set('x-user-email', userEmail);
     
-    if(req.nextUrl.pathname == '/'){
-      return NextResponse.redirect(new URL('/home', req.url));
-    }
     return NextResponse.next({ request: { headers } });
   } catch(error) {
     if(req.nextUrl.pathname == '/'){
@@ -32,5 +28,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/","/home","/settings","/history","/api/me","/history/dashboard","/history/dashboard/test"], 
+  matcher: ["/","/api/me","/home","/settings","/history","/history/dashboard","/history/dashboard/test"], 
 }

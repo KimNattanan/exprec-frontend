@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from "@/components/Footer";
 import { deleteUser, logoutUser } from "@/lib/api/user-api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -55,7 +56,7 @@ export default function Settings() {
           </div>
         </div>
       }
-      <div className="p-10">
+      <div className="p-10 min-h-screen">
         <div className="my-4">
           <button
             className="
@@ -78,6 +79,7 @@ export default function Settings() {
           >Delete Account</button>
         </div>
       </div>
+      <Footer/>
     </>
   )
 }

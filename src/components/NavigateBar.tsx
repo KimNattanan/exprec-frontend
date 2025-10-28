@@ -54,13 +54,18 @@ function MenuContainer({ toggle, toggleTheme, themeState }:{ toggle: boolean, to
             text-2xl xs:text-4xl
           ">
             <div className="flex-1 mx-auto w-fit font-medium cursor-pointer">
-              <Link href={'/'}>
+              <Link href={'/home'}>
                 <div className="hover:border-b-2">Home</div>
               </Link>
             </div>
             <div className="flex-1 mx-auto w-fit font-medium cursor-pointer">
               <Link href={'/history'}>
                 <div className="hover:border-b-2">History</div>
+              </Link>
+            </div>
+            <div className="flex-1 mx-auto w-fit font-medium cursor-pointer">
+              <Link href={'/history/dashboard'}>
+                <div className="hover:border-b-2">Dashboard</div>
               </Link>
             </div>
             <div
@@ -133,7 +138,7 @@ export default function NavigateBar() {
       <div className="sticky h-16"/>
       <div className="fixed bg-background transition-colors duration-500 flex items-center top-0 w-full h-16 z-50">
         <div className="flex h-full items-center grow">
-          <Link href={'/home'} className="h-full px-8">
+          <Link href={'/'} className="h-full pl-8">
             <div className="h-full flex items-center justify-center text-xl">
               <BsCashCoin/> Exprec
             </div>
@@ -144,15 +149,20 @@ export default function NavigateBar() {
             <MenuBtn toggle={showMenu}/>
           </div>
         </div>
-        <div className="hidden md:flex h-full items-center justify-end">
-          <div className="h-full mx-8 aspect-square flex items-center justify-center text-xl">
+        <div className="hidden md:flex h-full items-center justify-end text-lg lg:text-xl">
+          <div className="h-full mx-8 aspect-square flex items-center justify-center">
             <Link href={'/home'}>
               <div className="hover:border-b-2">Home</div>
             </Link>
           </div>
-          <div className="h-full mx-8 aspect-square flex items-center justify-center text-xl">
+          <div className="h-full mx-8 aspect-square flex items-center justify-center">
             <Link href={'/history'}>
               <div className="hover:border-b-2">History</div>
+            </Link>
+          </div>
+          <div className="h-full mx-8 aspect-square flex items-center justify-center">
+            <Link href={'/history/dashboard'}>
+              <div className="hover:border-b-2">Dashboard</div>
             </Link>
           </div>
           <div
