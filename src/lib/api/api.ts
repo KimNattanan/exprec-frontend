@@ -34,7 +34,6 @@ export async function fetchApi(
   if (res.status === 401) {
     const refresh = await fetch(`${BACKEND_URL}/api/v2/auth/refresh`, { method: 'POST', credentials: 'include' });
     if (!refresh.ok){
-      
       throw new Error('Session expired');
     }
 
