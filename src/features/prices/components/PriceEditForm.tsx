@@ -2,39 +2,34 @@
 
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
-import { usePrice } from "../api/get-price";
 import { UpdatePriceInput, useUpdatePrice } from "../api/update-price";
+import { Price } from "@/types/api";
 
 type Props = {
-  id: string;
+  price: Price;
   closeForm: ()=>void;
 }
 
 const MAX_PRICE = 9999999.99;
 
 export default function PriceEditForm({
-  id,
+  price,
   closeForm,
 }: Props) {
-  const price = usePrice({ priceId: id });
   const updatePrice = useUpdatePrice({
     mutationConfig: {
       onSuccess: closeForm,
-      onError: ()=>{
-        setSubmitting(false);
-        setSubmitMessage("Failed to save");
-      },
     },
   });
-  // const [newPrice, setNewPrice] = useState({ prev_id: price.data?.prev_id, next_id: price.data?.next_id, amount: price.data?.amount||0, bg_color: price.data?.bg_color });
-  const [newPrice, setNewPrice] = useState(price.data as UpdatePriceInput);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState("");
-  if(!price.data) return;
+  const [newPrice, setNewPrice] = useState({
+    position: price.position,
+    amount: price.amount,
+    bg_color: price.bg_color,
+  } as UpdatePriceInput);
   const submit = ()=>{
-    setSubmitting(true);
     newPrice.amount = Math.min(MAX_PRICE, Number(newPrice.amount?.toFixed(2)||0));
-    updatePrice.mutate({ priceId: price.data.id, data: newPrice })
+    newPrice.amount = Math.max(-MAX_PRICE, newPrice.amount);
+    updatePrice.mutate({ priceId: price.id, data: newPrice });
   }
   return (
     <div className="
@@ -103,12 +98,12 @@ export default function PriceEditForm({
               px-12 py-1 my-2 text-xl
             "
             onClick={submit}
-            disabled={submitting}
+            disabled={updatePrice.isPending}
           >
             Save
           </button>
-          {!submitting && 
-            <div className="text-bad text-sm">{submitMessage}</div>
+          {updatePrice.isError && 
+            <div className="text-bad text-sm">{updatePrice.error.message}</div>
           }
         </div>
       </div>

@@ -6,8 +6,7 @@ import { z } from 'zod';
 import { getPricesQueryOptions } from './get-prices';
 
 export const createPriceInputSchema = z.object({
-  prev_id: z.string().optional(),
-  next_id: z.string().optional(),
+  position: z.number(),
   amount: z.number().max(10000000, "Must less than 10000000").min(-10000000, "Must more than -10000000").optional(),
   bg_color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color.").optional(),
 });
@@ -19,7 +18,6 @@ export const createPrice = ({
 }: {
   data: CreatePriceInput;
 }): Promise<Price> => {
-  console.log("create:",data)
   if(!data.amount) data.amount = 100;
   if(!data.bg_color) data.bg_color = '#ffffff';
   return api.post('/prices', data);

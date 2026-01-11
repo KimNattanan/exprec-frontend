@@ -37,7 +37,7 @@ export const useCreateRecord = ({
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
-        queryKey: getRecordsQueryOptions().queryKey,
+        queryKey: [getRecordsQueryOptions().queryKey[0]],
       });
       onSuccess?.(data, ...args);
     },

@@ -1,11 +1,11 @@
 import { IoIosClose } from "react-icons/io";
 import { useDeleteCategory } from "../api/delete-category";
-import { useCategory } from "../api/get-category";
 import { useCreateCategory } from "../api/create-category";
 import { getContrastYIQ } from "@/utils/utils";
+import { Category } from "@/types/api";
 
 type Props = {
-  id: string;
+  category: Category;
   edit_mode: boolean;
   insertable: boolean;
   deletable: boolean;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function CategoryBox({
-  id,
+  category,
   edit_mode,
   insertable,
   deletable,
@@ -23,7 +23,6 @@ export default function CategoryBox({
   onSelect,
   onEdit,
 }: Props) {
-  const category = useCategory({ categoryId: id });
   const createCategory = useCreateCategory({
     mutationConfig: {
       onMutate: ()=>setDeletable(false),
@@ -36,8 +35,6 @@ export default function CategoryBox({
       onSettled: ()=>setDeletable(true),
     }
   });
-  console.log("cattt: ",category.data, id)
-  if(!category.data) return null;
   if(edit_mode){ // edit mode
     return (
       <div
@@ -57,7 +54,7 @@ export default function CategoryBox({
             xs:right-6
             right-5 top-0 text-2xl
           "
-          onClick={()=>deleteCategory.mutate({ categoryId: id })}
+          onClick={()=>deleteCategory.mutate({ categoryId: category.id })}
           disabled={!deletable}
         >
           <IoIosClose/>
@@ -72,10 +69,9 @@ export default function CategoryBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>createCategory.mutate({ data: {
-            prev_id: category.data.prev_id,
-            next_id: category.data.id,
-          }})}
+          onClick={()=>{console.log(category.position);createCategory.mutate({ data: {
+            position: category.position-0.1
+          }})}}
           disabled={!insertable}
         >{"<<"}</button>
         <div
@@ -87,10 +83,10 @@ export default function CategoryBox({
             xs:h-56 xs:w-43 xs:text-2xl
             h-36 w-25 text-base
           "
-          style={{ backgroundColor: category.data.bg_color, color: getContrastYIQ(category.data.bg_color, "#524439", "#ffffff") }}
+          style={{ backgroundColor: category.bg_color, color: getContrastYIQ(category.bg_color, "#524439", "#ffffff") }}
           onClick={onEdit}
         >
-          <div>{category.data.title}</div>
+          <div>{category.title}</div>
           <div className="text-xs">{'《 click to edit 》'}</div>
         </div>
         <button
@@ -104,8 +100,7 @@ export default function CategoryBox({
             h-36 text-xs w-5
           "
           onClick={()=>createCategory.mutate({ data: {
-            prev_id: category.data.id,
-            next_id: category.data.next_id,
+            position: category.position+0.1,
           }})}
           disabled={!insertable}
         >{">>"}</button>
@@ -123,10 +118,10 @@ export default function CategoryBox({
         xs:h-56 xs:w-56 xs:text-3xl
         h-36 w-36 m-2 text-xl
       "
-      style={{ backgroundColor: category.data.bg_color, color: getContrastYIQ(category.data.bg_color, "#524439", "#ffffff") }}
+      style={{ backgroundColor: category.bg_color, color: getContrastYIQ(category.bg_color, "#524439", "#ffffff") }}
       onClick={onSelect}
     >
-      {category.data.title}
+      {category.title}
     </div>
   )
 }

@@ -24,11 +24,8 @@ export default function TransactionForm() {
   
   // price, category
   const [createdAt, setCreatedAt] = useState<Date>(new Date());
-  // const [prices, setPrices] = useState<Array<Price>>([]);
   const prices = usePrices();
   const createPrice = useCreatePrice();
-  // const [categories, setCategories] = useState<Array<Category>>([]);
-  // const [categoryFetched, setCategoryFetched] = useState(false);
   const categories = useCategories();
   const createCategory = useCreateCategory();
 
@@ -67,20 +64,14 @@ export default function TransactionForm() {
   // submission
   const createRecord = useCreateRecord({
     mutationConfig: {
-      onMutate: ()=>setSubmitting(true),
-      onSettled: ()=>setSubmitting(false),
-      onError: (error)=>setSubmitMessage(error.message),
       onSuccess: ()=>{
         setRecord({} as Record);
         setPage(0);
-        setSubmitMessage("");
         setNote("");
       }
     }
   });
   const [record, setRecord] = useState<Record>({} as Record)
-  const [submitting, setSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState("")
 
   const submitHandler = ()=>{
     createRecord.mutate({data: { ...record, note: note, created_at: createdAt.toISOString() } as Record})
@@ -96,13 +87,13 @@ export default function TransactionForm() {
     <>
       {prices.data && edittingPrice != -1 &&
         <PriceEditForm
-          id={prices.data[edittingPrice].id}
+          price={prices.data[edittingPrice]}
           closeForm={()=>setEdittingPrice(-1)}
         />
       }
       {categories.data && edittingCategory != -1 &&
         <CategoryEditForm
-          id={categories.data[edittingCategory].id}
+          category={categories.data[edittingCategory]}
           closeForm={()=>setEdittingCategory(-1)}
         />
       }
@@ -128,7 +119,7 @@ export default function TransactionForm() {
             </div>
           </div>
         }
-        {(page == 0 && prices.data || page == 1 && categories.data) && // edit button
+        {(page == 0 && !prices.isPending || page == 1 && !categories.isPending) && // edit button
           <div
             className="
               fixed z-40
@@ -142,10 +133,7 @@ export default function TransactionForm() {
               bottom: '50%',
               transform: 'translate(50%, 50%)'
             }:{}}
-            onClick={()=>{
-              setEditMode(!editMode)
-              console.log(prices.data)
-            }}
+            onClick={()=>setEditMode(!editMode)}
           >
             <div className="
               flex items-center justify-center w-fit h-fit
@@ -162,7 +150,7 @@ export default function TransactionForm() {
             {prices.data?.map((v,i)=>(
               <PriceBox
                 key={i}
-                id={v.id}
+                price={v}
                 edit_mode={editMode}
                 insertable={prices.data.length < MAX_TAGS && deletable}
                 deletable={deletable}
@@ -179,7 +167,7 @@ export default function TransactionForm() {
                   xs:text-4xl
                   px-12 text:2xl
                 "
-                onClick={()=>createPrice.mutate({data: {}})}
+                onClick={()=>createPrice.mutate({data: { position: 0 }})}
                 disabled={!deletable}
               >add price</button>
             }
@@ -190,7 +178,7 @@ export default function TransactionForm() {
             {categories.data?.map((v,i)=>(
               <CategoryBox
                 key={i}
-                id={v.id}
+                category={v}
                 edit_mode={editMode}
                 insertable={categories.data.length < MAX_TAGS && deletable}
                 deletable={deletable}
@@ -207,7 +195,7 @@ export default function TransactionForm() {
                   xs:text-4xl
                   px-12 text-2xl
                 "
-                onClick={()=>createCategory.mutate({data: {}})}
+                onClick={()=>createCategory.mutate({data: { position: 0 }})}
                 disabled={!deletable}
               >add category</button>
             }
@@ -273,9 +261,9 @@ export default function TransactionForm() {
                 px-10 py-1
               "
               onClick={submitHandler}
-              disabled={submitting}
+              disabled={createRecord.isPending}
             >Submit</button>
-            {submitMessage}
+            { createRecord.isError && createRecord.error.message }
           </div>
         )}
       </div>

@@ -16,16 +16,14 @@ export type Pagination = {
 
 export type Price = {
   id: string;
-  prev_id: string;
-  next_id: string;
+  position: number;
   amount: number;
   bg_color: string;
 }
 
 export type Category = {
   id: string;
-  prev_id: string;
-  next_id: string;
+  position: number;
   title: string;
   bg_color: string;
 }

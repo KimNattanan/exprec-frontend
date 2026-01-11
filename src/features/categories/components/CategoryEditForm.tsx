@@ -2,38 +2,30 @@
 
 import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
-import { useCategory } from "../api/get-category";
 import { UpdateCategoryInput, useUpdateCategory } from "../api/update-category";
+import { Category } from "@/types/api";
 
 type Props = {
-  id: string;
+  category: Category;
   closeForm: ()=>void;
 }
 
-const MAX_PRICE = 9999999.99;
-
 export default function CategoryEditForm({
-  id,
+  category,
   closeForm,
 }: Props) {
-  const category = useCategory({ categoryId: id });
   const updateCategory = useUpdateCategory({
     mutationConfig: {
       onSuccess: closeForm,
-      onError: ()=>{
-        setSubmitting(false);
-        setSubmitMessage("Failed to save");
-      },
     },
   });
-  // const [newCategory, setNewCategory] = useState({ prev_id: category.data?.prev_id, next_id: category.data?.next_id, title: category.data?.title||0, bg_color: category.data?.bg_color });
-  const [newCategory, setNewCategory] = useState(category.data as UpdateCategoryInput);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState("");
-  if(!category.data) return;
+  const [newCategory, setNewCategory] = useState({
+    position: category.position,
+    title: category.title,
+    bg_color: category.bg_color,
+  } as UpdateCategoryInput);
   const submit = ()=>{
-    setSubmitting(true);
-    updateCategory.mutate({ categoryId: category.data.id, data: newCategory })
+    updateCategory.mutate({ categoryId: category.id, data: newCategory })
   }
   return (
     <div className="
@@ -102,12 +94,12 @@ export default function CategoryEditForm({
               px-12 py-1 my-2 text-xl
             "
             onClick={submit}
-            disabled={submitting}
+            disabled={updateCategory.isPending}
           >
             Save
           </button>
-          {!submitting && 
-            <div className="text-bad text-sm">{submitMessage}</div>
+          {updateCategory.isError && 
+            <div className="text-bad text-sm">{updateCategory.error.message}</div>
           }
         </div>
       </div>

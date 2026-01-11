@@ -82,7 +82,7 @@ async function fetchApi<T>(
 
 
   if (!response.ok) {
-    const message = (await response.json()).message || response.statusText;
+    const message = (await response.json()).error || response.statusText;
     throw new Error(message);
   }
 

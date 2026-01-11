@@ -10,17 +10,7 @@ export const getPrices = (): Promise<Price[]> => {
 export const getPricesQueryOptions = ()=>{
   return queryOptions({
     queryKey: ['prices'],
-    queryFn: async()=>{
-      const res = await getPrices();
-      const arr: Price[] = [];
-      let x = res.find(e => !e.prev_id);
-      while(x){
-        arr.push(x);
-        if(!x.next_id) break;
-        x = res.find(e => e.id === (x ? x.next_id : ''));
-      }
-      return arr;
-    },
+    queryFn: getPrices,
   });
 };
 

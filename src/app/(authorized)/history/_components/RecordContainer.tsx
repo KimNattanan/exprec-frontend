@@ -1,6 +1,6 @@
 'use client'
 
-import { Record } from "@/types/api"
+import { Pagination, Record } from "@/types/api"
 import { useHistoryContext } from "./HistoryContext"
 import { IoIosClose } from "react-icons/io"
 import { formatDateTime, getContrastYIQ } from "@/utils/utils"
@@ -8,12 +8,20 @@ import HistoryPaginator from "./HistoryPaginator"
 import { useDeleteRecord } from "@/features/records/api/delete-record"
 import { useRecords } from "@/features/records/api/get-records"
 
-function RecordBox({ record }: { record: Record }) {
-  const { editMode, deletable, setDeletable } = useHistoryContext();
+function RecordBox({ record, isLast }: { record: Record, isLast: boolean }) {
+  const { page, editMode, deletable, setDeletable } = useHistoryContext();
+  const setPage = (x: number)=>{
+    window.history.replaceState({}, '', '/history' + ((Number.isNaN(x) || x==1) ? '' : '?page='+x))
+  }
   const deleteRecord = useDeleteRecord({
     mutationConfig: {
       onMutate: ()=>setDeletable(false),
       onSettled: ()=>setDeletable(true),
+      onSuccess: ()=>{
+        if(isLast && page > 1){
+          setPage(page-1);
+        }
+      },
     },
   });
 
@@ -129,7 +137,7 @@ export default function RecordContainer() {
       </div>
       <HistoryPaginator pagination={records.data.pagination}/>
       {records.data.data.map((v,i)=>(
-        <RecordBox key={i} record={v}/>
+        <RecordBox key={i} record={v} isLast={records.data.data.length==1}/>
       ))}
       <HistoryPaginator pagination={records.data.pagination}/>
     </>

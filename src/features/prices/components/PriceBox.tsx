@@ -1,11 +1,11 @@
 import { IoIosClose } from "react-icons/io";
 import { useDeletePrice } from "../api/delete-price";
-import { usePrice } from "../api/get-price";
 import { useCreatePrice } from "../api/create-prices";
 import { getContrastYIQ } from "@/utils/utils";
+import { Price } from "@/types/api";
 
 type Props = {
-  id: string;
+  price: Price;
   edit_mode: boolean;
   insertable: boolean;
   deletable: boolean;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function PriceBox({
-  id,
+  price,
   edit_mode,
   insertable,
   deletable,
@@ -23,7 +23,6 @@ export default function PriceBox({
   onSelect,
   onEdit,
 }: Props) {
-  const price = usePrice({ priceId: id });
   const createPrice = useCreatePrice({
     mutationConfig: {
       onMutate: ()=>setDeletable(false),
@@ -36,7 +35,6 @@ export default function PriceBox({
       onSettled: ()=>setDeletable(true),
     }
   });
-  if(!price.data) return null;
   if(edit_mode){ // edit mode
     return (
       <div
@@ -56,7 +54,7 @@ export default function PriceBox({
             xs:right-6
             right-5 top-0 text-2xl
           "
-          onClick={()=>deletePrice.mutate({ priceId: id })}
+          onClick={()=>deletePrice.mutate({ priceId: price.id })}
           disabled={!deletable}
         >
           <IoIosClose/>
@@ -71,10 +69,11 @@ export default function PriceBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>createPrice.mutate({ data: {
-            prev_id: price.data.prev_id,
-            next_id: price.data.id,
-          }})}
+          onClick={()=>{
+          console.log("p: ",price.position)
+          createPrice.mutate({ data: {
+            position: price.position-0.1,
+          }})}}
           disabled={!insertable}
         >{"<<"}</button>
         <div
@@ -86,10 +85,10 @@ export default function PriceBox({
             xs:h-56 xs:w-43 xs:text-2xl
             h-36 w-25 text-base
           "
-          style={{ backgroundColor: price.data.bg_color, color: getContrastYIQ(price.data.bg_color, "#524439", "#ffffff") }}
-          onClick={onEdit}
+          style={{ backgroundColor: price.bg_color, color: getContrastYIQ(price.bg_color, "#524439", "#ffffff") }}
+          onClick={()=>onEdit()}
         >
-          <div>{price.data.amount}</div>
+          <div>{price.amount}</div>
           <div className="text-xs">{'《 click to edit 》'}</div>
         </div>
         <button
@@ -103,8 +102,7 @@ export default function PriceBox({
             h-36 text-xs w-5
           "
           onClick={()=>createPrice.mutate({ data: {
-            prev_id: price.data.id,
-            next_id: price.data.next_id,
+            position: price.position+0.1
           }})}
           disabled={!insertable}
         >{">>"}</button>
@@ -122,10 +120,10 @@ export default function PriceBox({
         xs:h-56 xs:w-56 xs:text-3xl
         h-36 w-36 m-2 text-xl
       "
-      style={{ backgroundColor: price.data.bg_color, color: getContrastYIQ(price.data.bg_color, "#524439", "#ffffff") }}
+      style={{ backgroundColor: price.bg_color, color: getContrastYIQ(price.bg_color, "#524439", "#ffffff") }}
       onClick={onSelect}
     >
-      {price.data.amount}
+      {price.amount}
     </div>
   )
 }

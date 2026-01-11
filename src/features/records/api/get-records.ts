@@ -23,7 +23,7 @@ export const getRecordsQueryOptions = (
   limit: number = 5,
 ) => {
   return queryOptions({
-    queryKey: ['records'],
+    queryKey: ['records', page, limit],
     queryFn: async() => {
       const records = await getRecords({ page, limit });
       if(records.pagination.totalPages < 1){
