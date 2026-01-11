@@ -120,8 +120,7 @@ export default function NavigateBar() {
   const [showMenu, setShowMenu] = useState(false);
 
   const setTheme = (theme: string)=>{
-    if(preferences.isPending || preferences.isError) return;
-    if(theme == preferences.data.theme) return;
+    if(theme == themeState) return;
     updatePreferences.mutate({ data: {
       theme,
     }});
@@ -136,7 +135,7 @@ export default function NavigateBar() {
   },[themeState]);
   const toggleTheme = ()=>{
     if(preferences.isPending || preferences.isError) return;
-    setTheme(preferences.data.theme=='light' ? 'dark' : 'light');
+    setTheme(themeState=='light' ? 'dark' : 'light');
   }
 
   useEffect(()=>{
@@ -179,7 +178,7 @@ export default function NavigateBar() {
             className="cursor-pointer mx-8 h-full aspect-square flex items-center justify-center text-4xl"
             onClick={toggleTheme}
           >
-            {(preferences.data?.theme||'light')=='light' ? (
+            {themeState=='light' ? (
               <CiLight/>
             ) : (
               <CiDark/>
@@ -194,7 +193,7 @@ export default function NavigateBar() {
           </div>
         </div>
       </div>
-      <MenuContainer toggle={showMenu} toggleTheme={toggleTheme} themeState={preferences.data?.theme||'light'}/>
+      <MenuContainer toggle={showMenu} toggleTheme={toggleTheme} themeState={themeState}/>
       <div className="fixed xs:text-sm text-xs right-0 px-4 mx-4 font-medium border-b-1 z-50 bg-background/50">
         {user.isPending ? '...' : user.data?.email}
       </div>
