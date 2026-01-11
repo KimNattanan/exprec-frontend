@@ -99,12 +99,24 @@ function MenuContainer({ toggle, toggleTheme, themeState }:{ toggle: boolean, to
 
 export default function NavigateBar() {
   const user = useUser();
-  const preferences = usePreferences();
-  const updatePreferences = useUpdatePreferences();
+  const preferences = usePreferences({
+    queryConfig: {
+      staleTime: 1000 * 60 * 30,
+    }
+  });
+  const [themeState, setThemeState] = useState('light');
+  const updatePreferences = useUpdatePreferences({
+    mutationConfig: {
+      onMutate: ({ data }) => {
+        setThemeState(data.theme);
+      },
+    },
+  });
+
+  useEffect(()=>{setThemeState(preferences.data?.theme||'light')},[preferences.data?.theme]);
   
   const pathname = usePathname();
-
-  // const [themeState, setThemeState] = useState('light');
+  
   const [showMenu, setShowMenu] = useState(false);
 
   const setTheme = (theme: string)=>{
@@ -116,13 +128,12 @@ export default function NavigateBar() {
   }
   useEffect(()=>{
     const root = document.documentElement;
-    const theme = preferences.data?.theme || 'light';
-    if(theme == 'light'){
+    if(themeState == 'light'){
       root.removeAttribute("data-theme");
-    }else if(theme == 'dark'){
+    }else if(themeState == 'dark'){
       root.setAttribute("data-theme", "dark");
     }
-  },[preferences.data?.theme]);
+  },[themeState]);
   const toggleTheme = ()=>{
     if(preferences.isPending || preferences.isError) return;
     setTheme(preferences.data.theme=='light' ? 'dark' : 'light');

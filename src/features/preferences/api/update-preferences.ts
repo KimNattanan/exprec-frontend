@@ -26,18 +26,8 @@ type UseUpdatePreferencesOptions = {
 export const useUpdatePreferences = ({
   mutationConfig,
 }: UseUpdatePreferencesOptions = {}) => {
-  const queryClient = useQueryClient();
-
-  const { onSuccess, ...restConfig } = mutationConfig || {};
-
   return useMutation({
-    onSuccess: (data, ...args) => {
-      queryClient.invalidateQueries({
-        queryKey: getPreferencesQueryOptions().queryKey,
-      });
-      onSuccess?.(data, ...args);
-    },
-    ...restConfig,
+    ...mutationConfig,
     mutationFn: updatePreferences,
   });
 };
