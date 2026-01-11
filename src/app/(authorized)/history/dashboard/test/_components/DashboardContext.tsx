@@ -16,13 +16,15 @@ type DashboardContextType = {
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
+export const emptyDashboardData: DashboardData = {
+  total_amount: 0,
+  amount_by_category: new Map<string,number>(),
+  category_color: new Map<string,string>(),
+  records: []
+};
+
 export function DashboardContextProvider({ children }:{ children: ReactNode }) {
-  const [dashboardData, setDashboardData] = useState<DashboardData>({
-    total_amount: 0,
-    amount_by_category: new Map<string,number>(),
-    category_color: new Map<string,string>(),
-    records: []
-  })
+  const [dashboardData, setDashboardData] = useState<DashboardData>(emptyDashboardData)
   const [categoryStatus, setCategoryStatus] = useState<CategoryStatus>(new Map<string,boolean>())
 
   const numberTests = 3;

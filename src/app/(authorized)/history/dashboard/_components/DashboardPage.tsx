@@ -6,7 +6,8 @@ import { getContrastYIQ } from "@/utils/utils"
 import { CategoryPieChart, MonthlyLineGraph } from "./DashboardCharts"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { useDashboard } from "@/features/records/api/get-dashboard"
+import { getDashboardQueryOptions, useDashboard } from "@/features/records/api/get-dashboard"
+import { useQueryClient } from "@tanstack/react-query"
 
 function SearchBox() {
   const { setDashboardData, setCategoryStatus } = useDashboardContext();
@@ -41,7 +42,7 @@ function SearchBox() {
       timeEnd,
       fetchEnable: true,
     });
-  }
+  };
   useEffect(()=>{
     if(!dashboard.data){
       setDashboardData(emptyDashboardData);
