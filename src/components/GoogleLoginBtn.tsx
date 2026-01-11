@@ -27,6 +27,8 @@ function LoginBtn() {
 }
 export default function GoogleLoginBtn() {
 
+  console.log("api: ",API_URL);
+
   const user = useUser();
 
   if(user.isPending){
