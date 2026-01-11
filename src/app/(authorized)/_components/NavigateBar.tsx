@@ -101,7 +101,7 @@ export default function NavigateBar() {
   const user = useUser();
   const preferences = usePreferences({
     queryConfig: {
-      staleTime: 1000 * 60 * 30,
+      gcTime: 0,
     }
   });
   const [themeState, setThemeState] = useState('light');
