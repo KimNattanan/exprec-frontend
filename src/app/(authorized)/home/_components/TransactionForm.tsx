@@ -129,7 +129,7 @@ export default function TransactionForm() {
             </div>
           </div>
         }
-        {(page == 0 && !prices.isPending || page == 1 && !categories.isPending) && // edit button
+        {(page == 0 || page == 1) && // edit button
           <div
             className="
               fixed z-40
@@ -138,7 +138,7 @@ export default function TransactionForm() {
               xs:text-4xl xs:p-2 xs:right-8 xs:bottom-8
               text-2xl right-4 bottom-4 p-1
             "
-            style={!editMode && (page==0 && prices.data?.length==0 || page==1 && categories.data?.length==0) ? {
+            style={!editMode && (page==0 && (prices.data?.length||0)==0 || page==1 && (categories.data?.length||0)==0) ? {
               right: '50%',
               bottom: '50%',
               transform: 'translate(50%, 50%)'
@@ -162,8 +162,8 @@ export default function TransactionForm() {
                 key={i}
                 price={v}
                 edit_mode={editMode}
-                insertable={prices.data.length < MAX_TAGS && deletable}
-                deletable={deletable}
+                insertable={prices.data.length < MAX_TAGS && deletable && !prices.isPending && !createPrice.isPending}
+                deletable={deletable && !prices.isPending && !createPrice.isPending}
                 setDeletable={setDeletable}
                 onSelect={priceSelectHandler(i)}
                 onEdit={()=>setEdittingPrice(i)}
@@ -178,9 +178,9 @@ export default function TransactionForm() {
                   px-12 text:2xl
                 "
                 onClick={()=>createPrice.mutate({data: { position: 0 }})}
-                disabled={!deletable}
-              >add price</button>
-            }
+                disabled={!deletable || prices.isPending || createPrice.isPending}
+                >add price</button>
+              }
           </div>
         )}
         {page == 1 && (
@@ -190,8 +190,8 @@ export default function TransactionForm() {
                 key={i}
                 category={v}
                 edit_mode={editMode}
-                insertable={categories.data.length < MAX_TAGS && deletable}
-                deletable={deletable}
+                insertable={categories.data.length < MAX_TAGS && deletable && !categories.isPending && !createCategory.isPending}
+                deletable={deletable && !categories.isPending && !createCategory.isPending}
                 setDeletable={setDeletable}
                 onSelect={categorySelectHandler(i)}
                 onEdit={()=>setEdittingCategory(i)}
@@ -206,7 +206,7 @@ export default function TransactionForm() {
                   px-12 text-2xl
                 "
                 onClick={()=>createCategory.mutate({data: { position: 0 }})}
-                disabled={!deletable}
+                disabled={!deletable || categories.isPending || createCategory.isPending}
               >add category</button>
             }
           </div>

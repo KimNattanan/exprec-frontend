@@ -69,9 +69,7 @@ export default function CategoryBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>{console.log(category.position);createCategory.mutate({ data: {
-            position: category.position-0.1
-          }})}}
+          onClick={()=>createCategory.mutate({ data: { position: category.position - 0.1 }})}
           disabled={!insertable}
         >{"<<"}</button>
         <div
@@ -99,9 +97,7 @@ export default function CategoryBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>createCategory.mutate({ data: {
-            position: category.position+0.1,
-          }})}
+          onClick={()=>createCategory.mutate({ data: { position: category.position + 0.1 }})}
           disabled={!insertable}
         >{">>"}</button>
       </div>

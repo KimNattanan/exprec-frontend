@@ -69,11 +69,7 @@ export default function PriceBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>{
-          console.log("p: ",price.position)
-          createPrice.mutate({ data: {
-            position: price.position-0.1,
-          }})}}
+          onClick={()=>createPrice.mutate({ data: { position: price.position - 0.1 }})}
           disabled={!insertable}
         >{"<<"}</button>
         <div
@@ -101,9 +97,7 @@ export default function PriceBox({
             xs:h-56 xs:w-6 xs:text-lg
             h-36 text-xs w-5
           "
-          onClick={()=>createPrice.mutate({ data: {
-            position: price.position+0.1
-          }})}
+          onClick={()=>createPrice.mutate({ data: { position: price.position + 0.1 }})}
           disabled={!insertable}
         >{">>"}</button>
       </div>

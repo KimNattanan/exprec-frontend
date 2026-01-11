@@ -3,7 +3,7 @@ import { QueryConfig } from '@/lib/react-query';
 import { Price } from '@/types/api';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-export const getPrices = (): Promise<Price[]> => {
+export const getPrices = async(): Promise<Price[]> => {
   return api.get('/prices');
 };
 

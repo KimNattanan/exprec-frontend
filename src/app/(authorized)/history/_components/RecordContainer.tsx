@@ -1,6 +1,6 @@
 'use client'
 
-import { Pagination, Record } from "@/types/api"
+import { Record } from "@/types/api"
 import { useHistoryContext } from "./HistoryContext"
 import { IoIosClose } from "react-icons/io"
 import { formatDateTime, getContrastYIQ } from "@/utils/utils"
@@ -18,7 +18,7 @@ function RecordBox({ record, isLast }: { record: Record, isLast: boolean }) {
       onMutate: ()=>setDeletable(false),
       onSettled: ()=>setDeletable(true),
       onSuccess: ()=>{
-        if(isLast && page > 1){
+        if(isLast && page >1){
           setPage(page-1);
         }
       },
