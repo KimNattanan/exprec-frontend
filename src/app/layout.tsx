@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fredoka } from "next/font/google";
 import "./globals.css";
+import { AppProvider } from "./provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +31,10 @@ export default function RootLayout({
 }>) {  
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased transition-colors duration-500`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} antialiased transition-colors duration-500`}>
+        <AppProvider>
+          {children}
+        </AppProvider>
       </body>
     </html>
   );

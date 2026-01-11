@@ -3,7 +3,7 @@ export type User = {
   name: string;
 }
 
-export type Preference = {
+export type Preferences = {
   theme: string;
 }
 

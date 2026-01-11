@@ -1,7 +1,7 @@
 'use client'
 
-import AboutPage from "@/components/AboutPage";
-import Footer from "@/components/Footer";
+import AboutPage from "@/app/_components/AboutPage";
+import Footer from "@/app/_components/Footer";
 import GoogleLoginBtn from "@/components/GoogleLoginBtn";
 import { useEffect, useState } from "react";
 import { BsCashCoin } from "react-icons/bs";

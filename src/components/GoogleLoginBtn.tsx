@@ -1,12 +1,9 @@
 'use client';
 
-import { getUser } from "@/lib/api/user-api";
+import { useUser } from "@/lib/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || '').replace(/\/+$/,'')
-
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || '').replace(/\/+$/,'')
 
 function LoginBtn() {
   return (
@@ -30,27 +27,20 @@ function LoginBtn() {
 }
 export default function GoogleLoginBtn() {
 
-  const [authorized, setAuthorized] = useState(0);
+  const user = useUser();
 
-  useEffect(()=>{
-    const checkAuthorized = async() => {
-      setAuthorized((await getUser()) ? 1 : -1);
-    };
-    checkAuthorized();
-  },[]);
-
-  if(authorized == -1){
-    return (
-      <a href={`${BACKEND_URL}/api/v2/auth/google/login`}>
-        <LoginBtn/>
-      </a>
-    );
-  }
-  if(authorized == 0){
+  if(user.isPending){
     return (
       <div className="opacity-50 hover:animate-[pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]">
         <LoginBtn/>
       </div>
+    );
+  }
+  if(user.isError){
+    return (
+      <a href={`${API_URL}/auth/google/login`}>
+        <LoginBtn/>
+      </a>
     );
   }
   return (

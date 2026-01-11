@@ -1,7 +1,7 @@
 'use server'
 
-import { DashboardContextProvider } from "@/components/history/dashboard/DashboardContext"
-import DashboardPage from "@/components/history/dashboard/DashboardPage"
+import { DashboardContextProvider } from "./_components/DashboardContext"
+import DashboardPage from "./_components/DashboardPage"
 
 export default async function Dashboard() {
   return (

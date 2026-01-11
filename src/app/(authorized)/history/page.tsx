@@ -1,8 +1,8 @@
 'use server'
 
-import { HistoryContextProvider } from "@/components/history/HistoryContext";
-import HistoryEditModeBtn from "@/components/history/HistoryEditModeBtn";
-import RecordContainer from "@/components/history/RecordContainer";
+import { HistoryContextProvider } from "./_components/HistoryContext";
+import HistoryEditModeBtn from "./_components/HistoryEditModeBtn";
+import RecordContainer from "./_components/RecordContainer";
 import Link from "next/link";
 import { Suspense } from "react";
 

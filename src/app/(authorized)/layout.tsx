@@ -1,4 +1,4 @@
-import NavigateBar from "@/components/NavigateBar";
+import NavigateBar from "./_components/NavigateBar";
 
 export default function Layout({
   children,

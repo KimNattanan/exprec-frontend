@@ -1,28 +1,26 @@
 'use client'
 
-import Footer from "@/components/Footer";
-import { deleteUser, logoutUser } from "@/lib/api/user-api";
+import Footer from "@/app/_components/Footer";
+import { useDeleteUser } from "@/features/user/api/delete-user";
+import { useLogout } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Settings() {
 
   const router = useRouter()
+  const logout = useLogout({
+    onSuccess: () => {
+      router.push('/')
+    }
+  });
+  const deleteUser = useDeleteUser({
+    mutationConfig: {
+      onSuccess: ()=>logout.mutate(),
+    },
+  });
 
   const [showDeleteUserConfirm, setShowDeleteUserConfirm] = useState(false)
-  const [deletingUser, setDeletingUser] = useState(false)
-  const [loggingOut, setLoggingOut] = useState(false)
-
-  const userDeleteHandler = async()=>{
-    setDeletingUser(true);
-    await deleteUser(router);
-    setDeletingUser(false);
-  }
-  const logoutHandler = async()=>{
-    setLoggingOut(true);
-    await logoutUser(router);
-    setLoggingOut(false);
-  }
 
   return (
     <>
@@ -49,8 +47,8 @@ export default function Settings() {
                   bg-bad text-white rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-default font-medium
                   px-8 py-1
                 "
-                onClick={userDeleteHandler}
-                disabled={deletingUser}
+                onClick={()=>deleteUser.mutate()}
+                disabled={deleteUser.isPending}
               >Confirm</button>
             </div>
           </div>
@@ -64,8 +62,8 @@ export default function Settings() {
               bg-foreground3 text-background rounded-full cursor-pointer font-medium disabled:opacity-50 disabled:cursor-default
               px-12 py-1
             "
-            onClick={logoutHandler}
-            disabled={loggingOut}
+            onClick={()=>logout.mutate()}
+            disabled={logout.isPending}
           >Logout</button>
         </div>
         <div className="my-4">

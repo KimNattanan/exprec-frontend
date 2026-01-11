@@ -1,6 +1,6 @@
 'use client'
 
-import TransactionForm from "@/components/transaction-form/TransactionForm";
+import TransactionForm from "@/app/(authorized)/home/_components/TransactionForm";
 
 export default function Home() {  
   return (
