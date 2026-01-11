@@ -25,9 +25,19 @@ export default function TransactionForm() {
   // price, category
   const [createdAt, setCreatedAt] = useState<Date>(new Date());
   const prices = usePrices();
-  const createPrice = useCreatePrice();
+  const createPrice = useCreatePrice({
+    mutationConfig: {
+      onMutate: ()=>setDeletable(false),
+      onSettled: ()=>setDeletable(true),
+    }
+  });
   const categories = useCategories();
-  const createCategory = useCreateCategory();
+  const createCategory = useCreateCategory({
+    mutationConfig: {
+      onMutate: ()=>setDeletable(false),
+      onSettled: ()=>setDeletable(true),
+    }
+  });
 
   const [deletable, setDeletable] = useState(true);
   
